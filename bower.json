@@ -1,0 +1,27 @@
+{
+  "name": "cms-angular",
+  "version": "0.0.1",
+  "authors": [
+    "nergal-perm <nergal@psu.ru>"
+  ],
+  "description": "Simple CMS",
+  "moduleType": [
+    "es6"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "libs"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-bootstrap": "~0.14.1",
+    "angular-route": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4"
+  }
+}

@@ -1,0 +1,26 @@
+<div class="container">
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<table class="table">
+				<tr>
+					<th>Клиент</th>
+					<th>Сегмент</th>
+					<th>Ожидаемая выручка</th>
+					<th>Ожидаемая прибыль</th>
+					<th>Статус</th>
+				</tr>
+				<tr ng-repeat="details in records track by details.clientName">
+					<td>{{details.clientName}}</td>
+					<td>{{details.segmentName}}</td>
+					<td>{{details.segmentRevenue}}</td>
+					<td>{{details.segmentProfit}}</td>
+					<td>{{details.statusName}}</td>
+					<td><button class="btn btn-primary" ng-click="open($index)"><span class="glyphicon glyphicon-edit"></span> Изменить</button></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<button class="btn btn-primary col-lg-offset-1" ng-click="open(null)"><span class="glyphicon glyphicon-plus"></span> Добавить</button>
+	</div>
+</div>

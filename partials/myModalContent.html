@@ -1,0 +1,75 @@
+<div class="modal-header">
+	<h3 class="modal-title">Детальная информация</h3>
+</div>
+<div class="modal-body">
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation"><a href="#client" aria-controls="client" role="tab" data-toggle="tab">Клиент</a></li>
+		<li role="presentation"><a href="#segment" aria-controls="segment" role="tab" data-toggle="tab">Сегмент</a></li>
+		<li role="presentation"><a href="#status" aria-controls="status" role="tab" data-toggle="tab">Процесс и цель</a></li>
+	</ul>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="client">
+			<div class="container-fluid">
+				<br />
+				<div class="form-group">
+					<label for="clientName">Название клиента</label>
+					<input type="text" class="form-control" id="clientName" placeholder="Название клиента" ng-model="item.clientName">
+				</div>
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default" id="contactDetals">
+						<div class="panel-heading" role="tab" id="panelOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Контактное лицо</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
+							<div class="panel-body">
+								<div class="form-group">
+									<label for="contactFullName">Полное имя</label>
+									<input type="text" class="form-control" id="contactFullName" placeholder="ФИО" ng-model="item.contactFullName">
+								</div>
+								<div class="form-group">
+									<label for="contactJobTitle">Должность</label>
+									<input type="text" class="form-control" id="contactJobTitle" placeholder="Должность" ng-model="item.contactJobTitle">
+								</div>
+							</div>
+						</div>							
+					</div>
+					<div class="panel panel-default" id="bossDetals">
+						<div class="panel-heading" role="tab" id="panelTwo">
+							<h4 class="panel-title">
+								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Руководитель, принимающий решения</a>
+							</h4>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel">
+							<div class="panel-body">
+								<div class="form-group">
+									<label for="bossFullName">Полное имя</label>
+									<input type="text" class="form-control" id="bossFullName" placeholder="ФИО" ng-model="item.bossFullName">
+								</div>
+								<div class="form-group">
+									<label for="bossJobTitle">Должность</label>
+									<input type="text" class="form-control" id="bossJobTitle" placeholder="Должность" ng-model="item.bossJobTitle">
+								</div>
+							</div>
+						</div>							
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="segment">
+			<div class="form-group">
+				{{item.segmentName}}
+			</div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="status">
+			<div class="form-group">
+				{{item.statusName}}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

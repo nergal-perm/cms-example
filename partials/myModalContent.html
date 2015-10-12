@@ -23,15 +23,43 @@
 							</h4>
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
-							<div class="panel-body">
+							<div class="panel-body form-horizontal">
 								<div class="form-group">
-									<label for="contactFullName">Полное имя</label>
-									<input type="text" class="form-control" id="contactFullName" placeholder="ФИО" ng-model="item.contactFullName">
+									<label class="col-sm-3" for="contactFullName">Полное имя</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="contactFullName" placeholder="ФИО" ng-model="item.contactFullName">
+									</div>
 								</div>
 								<div class="form-group">
-									<label for="contactJobTitle">Должность</label>
-									<input type="text" class="form-control" id="contactJobTitle" placeholder="Должность" ng-model="item.contactJobTitle">
+									<label class="col-sm-3" for="contactJobTitle">Должность</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="contactJobTitle" placeholder="Должность" ng-model="item.contactJobTitle">
+									</div>
 								</div>
+									<div class="form-group">
+										<label class="col-sm-3" for="contactPhone">Телефон</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" id="contactPhone" placeholder="Телефон" ng-model="item.contactPhone">
+										</div>
+								 </div>
+									<div class="form-group">
+										<label class="col-sm-3" for="contactMobile">Мобильный</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" id="contactMobile" placeholder="Мобильный" ng-model="item.contactMobile">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3" for="contactEmail">Email</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" id="contactEmail" placeholder="address@example.com" ng-model="item.contactEmail">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3" for="contactBirthDate">Дата рождения</label>
+										<div class="col-sm-9">
+											<input type="text" class="form-control" id="contactBirthDate" placeholder="01.01.1970" ng-model="item.birthDate">
+										</div>
+									</div>
 							</div>
 						</div>							
 					</div>

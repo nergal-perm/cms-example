@@ -3,9 +3,9 @@
 </div>
 <div class="modal-body">
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation"><a href="#client" aria-controls="client" role="tab" data-toggle="tab">Клиент</a></li>
-		<li role="presentation"><a href="#segment" aria-controls="segment" role="tab" data-toggle="tab">Сегмент</a></li>
-		<li role="presentation"><a href="#status" aria-controls="status" role="tab" data-toggle="tab">Процесс и цель</a></li>
+		<li role="presentation"><a href="#client" aria-controls="client" role="tab" data-toggle="tab" ng-click="$event.preventDefault();">Клиент</a></li>
+		<li role="presentation"><a href="#segment" aria-controls="segment" role="tab" data-toggle="tab" ng-click="$event.preventDefault();">Сегмент</a></li>
+		<li role="presentation"><a href="#status" aria-controls="status" role="tab" data-toggle="tab" ng-click="$event.preventDefault();">Процесс и цель</a></li>
 	</ul>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="client">
@@ -19,7 +19,7 @@
 					<div class="panel panel-default" id="contactDetals">
 						<div class="panel-heading" role="tab" id="panelOne">
 							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Контактное лицо</a>
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" ng-click="$event.preventDefault();">Контактное лицо</a>
 							</h4>
 						</div>
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
@@ -36,65 +36,113 @@
 										<input type="text" class="form-control" id="contactJobTitle" placeholder="Должность" ng-model="item.contactJobTitle">
 									</div>
 								</div>
-									<div class="form-group">
-										<label class="col-sm-3" for="contactPhone">Телефон</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control" id="contactPhone" placeholder="Телефон" ng-model="item.contactPhone">
-										</div>
-								 </div>
-									<div class="form-group">
-										<label class="col-sm-3" for="contactMobile">Мобильный</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control" id="contactMobile" placeholder="Мобильный" ng-model="item.contactMobile">
-										</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="contactPhone">Телефон</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="contactPhone" placeholder="Телефон" ng-model="item.contactPhone">
 									</div>
-									<div class="form-group">
-										<label class="col-sm-3" for="contactEmail">Email</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control" id="contactEmail" placeholder="address@example.com" ng-model="item.contactEmail">
-										</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="contactMobile">Мобильный</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="contactMobile" placeholder="Мобильный" ng-model="item.contactMobile">
 									</div>
-									<div class="form-group">
-										<label class="col-sm-3" for="contactBirthDate">Дата рождения</label>
-										<div class="col-sm-9">
-											<input type="text" class="form-control" id="contactBirthDate" placeholder="01.01.1970" ng-model="item.birthDate">
-										</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="contactEmail">Email</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="contactEmail" placeholder="address@example.com" ng-model="item.contactEmail">
 									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="contactBirthDate">Дата рождения</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="contactBirthDate" placeholder="01.01.1970" ng-model="item.contactBirthDate">
+									</div>
+								</div>
 							</div>
-						</div>							
+						</div>
 					</div>
 					<div class="panel panel-default" id="bossDetals">
 						<div class="panel-heading" role="tab" id="panelTwo">
 							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Руководитель, принимающий решения</a>
+								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" ng-click="$event.preventDefault();">Руководитель, принимающий решения</a>
 							</h4>
 						</div>
 						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel">
-							<div class="panel-body">
+							<div class="panel-body form-horizontal">
 								<div class="form-group">
-									<label for="bossFullName">Полное имя</label>
-									<input type="text" class="form-control" id="bossFullName" placeholder="ФИО" ng-model="item.bossFullName">
+									<label class="col-sm-3" for="bossFullName">Полное имя</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="bossFullName" placeholder="ФИО" ng-model="item.bossFullName">
+									</div>
 								</div>
 								<div class="form-group">
-									<label for="bossJobTitle">Должность</label>
-									<input type="text" class="form-control" id="bossJobTitle" placeholder="Должность" ng-model="item.bossJobTitle">
+									<label class="col-sm-3" for="bossJobTitle">Должность</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="bossJobTitle" placeholder="Должность" ng-model="item.bossJobTitle">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="bossPhone">Телефон</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="bossPhone" placeholder="Телефон" ng-model="item.bossPhone">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="bossMobile">Мобильный</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="bossMobile" placeholder="Мобильный" ng-model="item.bossMobile">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="bossEmail">Email</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="bossEmail" placeholder="address@example.com" ng-model="item.bossEmail">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="bossBirthDate">Дата рождения</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="bossBirthDate" placeholder="01.01.1970" ng-model="item.bossBirthDate">
+									</div>
 								</div>
 							</div>
-						</div>							
-					</div>					
+						</div>
+					</div>
+					
 				</div>
+				<!-- .panel-group #accordion -->
 			</div>
+			<!-- .container-fluid -->
 		</div>
+		<!-- .tab-pane #client -->
 		<div role="tabpanel" class="tab-pane" id="segment">
-			<div class="form-group">
-				{{item.segmentName}}
+			<div class="container-fluid">
+				<br />
+				<div class="form-group">
+					<label for="segmentName">Сегмент клиента</label>
+					<select class="form-control" id="segmentName" placeholder="Выберите сегмент..." ng-model="item.segmentName">
+						<option value="Прибыльный ЦЕЛЕВОЙ">Прибыльный ЦЕЛЕВОЙ</option>
+						<option value="Прибыльный НЕЦЕЛЕВОЙ">Прибыльный НЕЦЕЛЕВОЙ</option>
+					</select>
+				</div>
+				<!-- .form-group -->
+			
+				<div class="panel panel-default" id="segmentFinance" class="form-horizontal">
+				
+				</div> 
+				<!-- .panel panel-default -->
 			</div>
+			<!-- .container-fluid -->
 		</div>
+		<!-- .tab-pane #segment -->
 		<div role="tabpanel" class="tab-pane" id="status">
 			<div class="form-group">
 				{{item.statusName}}
 			</div>
 		</div>
+		<!-- .tab-pane #status -->
 	</div>
 </div>
 <div class="modal-footer">

@@ -15,14 +15,14 @@
 					<label for="clientName">Название клиента</label>
 					<input type="text" class="form-control" id="clientName" placeholder="Название клиента" ng-model="item.clientName">
 				</div>
-				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel-group" id="accordionClient" role="tablist" aria-multiselectable="true">
 					<div class="panel panel-default" id="contactDetals">
-						<div class="panel-heading" role="tab" id="panelOne">
+						<div class="panel-heading" role="tab" id="panelClientOne">
 							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" ng-click="$event.preventDefault();">Контактное лицо</a>
+								<a role="button" data-toggle="collapse" data-parent="#accordionClient" href="#collapseClientOne" aria-expanded="true" aria-controls="collapseClientOne" ng-click="$event.preventDefault();">Контактное лицо</a>
 							</h4>
 						</div>
-						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
+						<div id="collapseClientOne" class="panel-collapse collapse in" role="tabpanel">
 							<div class="panel-body form-horizontal">
 								<div class="form-group">
 									<label class="col-sm-3" for="contactFullName">Полное имя</label>
@@ -64,12 +64,12 @@
 						</div>
 					</div>
 					<div class="panel panel-default" id="bossDetals">
-						<div class="panel-heading" role="tab" id="panelTwo">
+						<div class="panel-heading" role="tab" id="panelClientTwo">
 							<h4 class="panel-title">
-								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" ng-click="$event.preventDefault();">Руководитель, принимающий решения</a>
+								<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordionClient" href="#collapseClientTwo" aria-expanded="false" aria-controls="collapseClientTwo" ng-click="$event.preventDefault();">Руководитель, принимающий решения</a>
 							</h4>
 						</div>
-						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel">
+						<div id="collapseClientTwo" class="panel-collapse collapse" role="tabpanel">
 							<div class="panel-body form-horizontal">
 								<div class="form-group">
 									<label class="col-sm-3" for="bossFullName">Полное имя</label>
@@ -110,9 +110,9 @@
 							</div>
 						</div>
 					</div>
-					
+
 				</div>
-				<!-- .panel-group #accordion -->
+				<!-- .panel-group #accordionClient -->
 			</div>
 			<!-- .container-fluid -->
 		</div>
@@ -128,58 +128,231 @@
 					</select>
 				</div>
 				<!-- .form-group -->
-			
-				<div class="panel panel-default" id="segmentFinance">
-					<div class="panel-heading">
-						<h4 class="panel-title">Финансовые показатели</h4>
-					</div>
-					<div class="panel-body form-horizontal">
-						<div class="form-group">
-							<label class="col-sm-3" for="segmentRevenue">Ожидаемая выручка</label>
-							<div class="col-sm-9">
-								<input type="number" class="form-control" id="segmentRevenue" placeholder="0,00" ng-model="item.segmentRevenue">
-							</div>
-						</div>				
-						<div class="form-group">
-							<label class="col-sm-3" for="segmentProfit">Ожидаемая прибыль</label>
-							<div class="col-sm-9">
-								<input type="number" class="form-control" id="segmentProfit" placeholder="0,00" ng-model="item.segmentProfit">
-							</div>
-						</div>				
-					</div>
-					<!-- .panel-body form-horizontal -->
-				</div> 
-				<!-- .panel panel-default -->
-				<div class="panel panel-default" id="segmentServices">
-					<div class="panel-heading">
-						<h4 class="panel-title">Потребность в сервисе</h4>
-					</div>					
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-sm-6">
-								<div class="panel panel-default">
-									<div class="panel-heading"><h5 class="panel-title">АТМ</h5></div>
-									<div class="panel-body">
-										<div class="checkbox">
-											<label><input type="checkbox" id="atmRadio1" value="Инкассация" ng-model="item.segmentServices">Инкассация</label>
-										</div>
+				<div class="panel-group" id="accordionSegment" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default" id="segmentFinance">
+						<div class="panel-heading" role="tab" id="panelSegmentOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordionSegment" href="#collapseSegmentOne" aria-expanded="true" aria-controls="collapseSegmentOne" ng-click="$event.preventDefault();">Финансовые показатели</a>
+							</h4>
+						</div>
+						<div id="collapseSegmentOne" class="panel-collapse collapse in" role="tabpanel">
+							<div class="panel-body form-horizontal">
+								<div class="form-group">
+									<label class="col-sm-3" for="segmentRevenue">Ожидаемая выручка</label>
+									<div class="col-sm-9">
+										<input type="number" class="form-control" id="segmentRevenue" placeholder="0,00" ng-model="item.segmentRevenue">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="segmentProfit">Ожидаемая прибыль</label>
+									<div class="col-sm-9">
+										<input type="number" class="form-control" id="segmentProfit" placeholder="0,00" ng-model="item.segmentProfit">
 									</div>
 								</div>
 							</div>
+							<!-- .panel-body form-horizontal -->
 						</div>
-					<p>{{item.segmentServices}}</p>
+						<!-- .panel-collapse collapse in #collapseSegmentOne -->
 					</div>
-					<!-- .panel-body -->
+					<!-- .panel panel-default #segmentFinance-->
+					<div class="panel panel-default" id="segmentServices">
+						<div class="panel-heading" role="tab" id="panelSegmentTwo">
+							<h4 class="panel-title">
+								<a href="#collapseSegmentTwo" role="button" data-toggle="collapse" data-parent="#accordionSegment" aria-expanded="false" aria-controls="collapseSegmentTwo" ng-click="$event.preventDefault();">Потребность в сервисе</a>
+							</h4>
+						</div>
+						<div id="collapseSegmentTwo" class="panel-collapse collapse" role="tabpanel">
+							<div class="panel-body container-fluid">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5 class="panel-title">АТМ</h5></div>
+											<div class="panel-body">
+												<div class="checkbox" ng-repeat="atm in atmServices">
+													<label>
+														<input type="checkbox" ng-checked="item.segmentServices.indexOf(atm) != -1" ng-click="toggleCheck(atm)" value="atm">{{atm.replace('atm-', '')}}</label>
+												</div>
+												<!-- .checkbox -->
+											</div>
+											<!-- .panel-body -->
+										</div>
+										<!-- .panel panel-default -->
+									</div>
+									<!-- .col-sm-6 -->
+									<div class="col-sm-6">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5 class="panel-title">Перевозки</h5></div>
+											<div class="panel-body">
+												<div class="checkbox" ng-repeat="log in logServices">
+													<label>
+														<input type="checkbox" ng-checked="item.segmentServices.indexOf(log) != -1" ng-click="toggleCheck(log)" value="log">{{log.replace('log-', '')}}</label>
+												</div>
+												<!-- .checkbox -->
+											</div>
+											<!-- .panel-body -->
+										</div>
+										<!-- .panel panel-default -->
+									</div>
+									<!-- .col-sm-6 -->
+								</div>
+								<!-- .row -->
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5 class="panel-title">CIT</h5></div>
+											<div class="panel-body">
+												<div class="checkbox" ng-repeat="cit in citServices">
+													<label>
+														<input type="checkbox" ng-checked="item.segmentServices.indexOf(cit) != -1" ng-click="toggleCheck(cit)" value="cit">{{cit.replace('cit-', '')}}</label>
+												</div>
+												<!-- .checkbox -->
+											</div>
+											<!-- .panel-body -->
+										</div>
+										<!-- .panel panel-default -->
+									</div>
+									<!-- .col-sm-6 -->
+									<div class="col-sm-6">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5 class="panel-title">Хранение</h5></div>
+											<div class="panel-body">
+												<div class="checkbox" ng-repeat="keep in keepServices">
+													<label>
+														<input type="checkbox" ng-checked="item.segmentServices.indexOf(keep) != -1" ng-click="toggleCheck(keep)" value="keep">{{keep.replace('keep-', '')}}</label>
+												</div>
+												<!-- .checkbox -->
+											</div>
+											<!-- .panel-body -->
+										</div>
+										<!-- .panel panel-default -->
+									</div>
+									<!-- .col-sm-6 -->
+								</div>
+								<!-- .row -->
+								<div class="row" ng-show="item.segmentName === 'Прибыльный ЦЕЛЕВОЙ'">
+									<div class="col-sm-6">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5 class="panel-title">AMS</h5></div>
+											<div class="panel-body">
+												<div class="checkbox" ng-repeat="ams in amsServices">
+													<label><input type="checkbox" ng-checked="item.segmentServices.indexOf(ams) != -1" ng-click="toggleCheck(ams)" value="ams">{{ams.replace('ams-', '')}}</label>
+												</div>
+												<!-- .checkbox -->
+											</div>
+											<!-- .panel-body -->
+										</div>
+										<!-- .panel panel-default -->
+									</div>
+									<!-- .col-sm-6 -->
+									<div class="col-sm-6">
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<h5 class="panel-title">MP</h5></div>
+											<div class="panel-body">
+												<div class="checkbox" ng-repeat="mp in mpServices">
+													<label><input type="checkbox" ng-checked="item.segmentServices.indexOf(mp) != -1" ng-click="toggleCheck(mp)" value="mp">{{mp.replace('mp-', '')}}</label>
+												</div>
+												<!-- .checkbox -->
+											</div>
+											<!-- .panel-body -->
+										</div>
+										<!-- .panel panel-default -->
+									</div>
+									<!-- .col-sm-6 -->
+								</div>
+								<!-- .row -->
+							</div>
+							<!-- .panel-body -->
+						</div>
+						<!-- .panel-collapse collapse #collapseSegmentTwo -->
+					</div>
+					<!-- .panel panel-default #segmentServices -->
 				</div>
-				<!-- .panel panel-default #services -->
+				<!-- .panel-group #accordionSegment-->
 			</div>
 			<!-- .container-fluid -->
 		</div>
 		<!-- .tab-pane #segment -->
 		<div role="tabpanel" class="tab-pane" id="status">
-			<div class="form-group">
-				{{item.statusName}}
+			<div class="container-fluid">
+				<br />
+				<div class="form-group">
+					<label for="statusName">Статус</label>
+					<select class="form-control" id="statusName" placeholder="Выберите статус..." ng-model="item.statusName">
+						<option value="Резерв">Резерв</option>
+						<option value="Интерес">Интерес</option>
+						<option value="Убеждение">Убеждение</option>
+						<option value="Сделка">Сделка</option>						
+					</select>
+				</div>
+				<!-- .form-group -->
+				<div class="panel-group" id="accordionActions" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default" id="nextAction">
+						<div class="panel-heading" role="tab" id="panelActionsOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordionActions" href="#collapseActionOne" aria-expanded="true" aria-controls="collapseActionOne" ng-click="$event.preventDefault();">Следующее действие</a>
+							</h4>
+						</div>
+						<!-- .panel-heading $panelActionsOne -->
+						<div id="collapseActionOne" class="panel-collapse collapse in" role="tabpanel">
+							<div class="panel-body form-horizontal">
+								<div class="form-group">
+									<label class="col-sm-3" for="nextActionType">Вид действия</label>
+									<div class="col-sm-9">
+										<select class="form-control" id="nextActionType" placeholder="Выберите тип действия..." ng-model="item.nextAction.actionType">
+											<option value="Контакт:email">Контакт:email</option>
+											<option value="Контакт:звонок">Контакт:звонок</option>
+											<option value="Контакт:встреча">Контакт:встреча</option>
+											<option value="Смена статуса">Смена статуса</option>						
+										</select>										
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3" for="nextActionDate">Дата действия</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="nextActionDate" ng-model="item.nextAction.actionDate">
+									</div>
+								</div>
+							</div>
+							<!-- .panel-body form-horizontal -->
+						</div>
+						<!-- .panel-collapse #collapseActionOne -->						
+					</div>
+					<!-- .panel panel-default #nextAction -->
+					<div class="panel panel-default" id="listActions">
+						<div class="panel-heading" role="tab" id="panelActionsTwo">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordionActions" href="#collapseActionTwo" aria-expanded="true" aria-controls="collapseActionTwo" ng-click="$event.preventDefault();">История действий</a>
+							</h4>
+						</div>
+						<!-- .panel-heading $panelActionsOne -->
+						<div id="collapseActionTwo" class="panel-collapse collapse" role="tabpanel">
+							<div class="panel-body form-horizontal">
+								<table class="table">
+									<tr>
+										<th>Дата действия</th>
+										<th>Вид действия</th>
+									</tr>
+									<tr ng-repeat="action in item.actions">
+										<td>{{action.actionDate}}</td>
+										<td>{{action.actionType}}</td>
+									</tr>
+								</table>							
+							</div>
+							<!-- .panel-body form-horizontal -->
+						</div>
+						<!-- .panel-collapse #collapseActionOne -->						
+					</div>
+					<!-- .panel panel-default #nextAction -->					
+				</div>
+				<!-- .panelGroup #accordionActions -->
 			</div>
+			<!-- .container-fluid -->
 		</div>
 		<!-- .tab-pane #status -->
 	</div>

@@ -20,11 +20,13 @@ cmsControllers.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($s
 		bossBirthDate: "31.03.1984",
 		segmentName: "Прибыльный ЦЕЛЕВОЙ",
 		segmentRevenue: 400000,
-		segmentProfit: 0.05,
-		segmentServices: ["АТМ", "Перевозки региональные"],
+		segmentProfit: 5,
+		segmentServices: ["atm-AMS", "log-Городские"],
 		statusName: "Убеждение",
-		nextActionType: "Контакт: звонок",
-		nextActionDate: "13.10.2015",
+		nextAction: {
+			actionType: "Контакт:звонок",
+			actionDate: "13.10.2015"
+		},
 		actions: [{ actionType: "Контакт: email", actionDate: "10.10.2015" }]
 	});
 
@@ -44,11 +46,13 @@ cmsControllers.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($s
 		bossBirthDate: "31.03.1984",
 		segmentName: "Прибыльный НЕЦЕЛЕВОЙ",
 		segmentRevenue: 150000,
-		segmentProfit: 0.10,
-		segmentServices: ["Перевозки региональные", "Страхование"],
+		segmentProfit: 10,
+		segmentServices: ["log-Региональные", "ams-Страхование"],
 		statusName: "Резерв",
-		nextActionType: "Контакт: звонок",
-		nextActionDate: "25.10.2015",
+		nextAction: {
+			actionType: "Контакт:звонок",
+			actionDate: "25.10.2015"
+		},
 		actions: [{ actionType: "Контакт: email", actionDate: "10.10.2014" }]
 	});
 
@@ -84,6 +88,7 @@ cmsControllers.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($s
 }]);
 
 cmsControllers.controller('ModalCtrl', ['$scope', '$modalInstance', 'itemFromView', function ModalCtrl($scope, $modalInstance, itemFromView) {
+	 
 	 if (itemFromView) {
 		var itemToEdit = itemFromView;
 		$scope.item = {};
@@ -104,17 +109,31 @@ cmsControllers.controller('ModalCtrl', ['$scope', '$modalInstance', 'itemFromVie
 		$scope.item.segmentName = itemToEdit.segmentName;
 		$scope.item.segmentRevenue = itemToEdit.segmentRevenue;
 		$scope.item.segmentProfit = itemToEdit.segmentProfit;
-		$scope.item.segmentServices = [];
-		$scope.item.segmentServices.push(itemToEdit.segmentServices);
+		$scope.item.segmentServices = itemToEdit.segmentServices;
 		$scope.item.statusName = itemToEdit.statusName;
-		$scope.item.nextActionType = itemToEdit.nextActionType;
-		$scope.item.nextActionDate = itemToEdit.nextActionDate;
-		$scope.item.actions = [];
-		$scope.item.actions.push(itemToEdit.actions);
+		$scope.item.nextAction = itemToEdit.nextAction;
+		$scope.item.actions = itemToEdit.actions;
 	 } else {
 		$scope.item = {};
 		$scope.item.actions = [];
+		$scope.item.segmentServices = [];
 	 }
+
+	 $scope.atmServices = ["atm-AMS", "atm-Инкассация"];
+	 $scope.citServices = ['cit-Ритейл', 'cit-Банковские офисы','cit-ЦБ'];
+	 $scope.logServices = ['log-Городские', 'log-Региональные'];
+	 $scope.keepServices = ['keep-Краткосрочное','keep-Долгосрочное'];
+	 $scope.mpServices = ['mp-Ритейл','mp-Банковские офисы','mp-ATM','mp-Терминалы','mp-АДМ'];
+	 $scope.amsServices=['ams-Финансовый менеджмент','ams-"Таинственные исчезновения"','ams-Технический мониторинг','ams-Экспресс FLM','ams-SLM','ams-iSLM','ams-Менеджмент поставщиков услуг','ams-Страхование','ams-Аренда'];
+	 $scope.toggleCheck = function(service) {
+		 console.log('Checkng service: ' + service);
+		 console.log('Its index: ' + $scope.item.segmentServices.indexOf(service));
+		 if ($scope.item.segmentServices.indexOf(service) === -1) {
+			 $scope.item.segmentServices.push(service);
+		 } else {
+			 $scope.item.segmentServices.splice($scope.item.segmentServices.indexOf(service), 1);
+		 };
+	 };
 
 	 $scope.ok = function () {
 		$modalInstance.close($scope.item);

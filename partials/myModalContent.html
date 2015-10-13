@@ -129,10 +129,49 @@
 				</div>
 				<!-- .form-group -->
 			
-				<div class="panel panel-default" id="segmentFinance" class="form-horizontal">
-				
+				<div class="panel panel-default" id="segmentFinance">
+					<div class="panel-heading">
+						<h4 class="panel-title">Финансовые показатели</h4>
+					</div>
+					<div class="panel-body form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-3" for="segmentRevenue">Ожидаемая выручка</label>
+							<div class="col-sm-9">
+								<input type="number" class="form-control" id="segmentRevenue" placeholder="0,00" ng-model="item.segmentRevenue">
+							</div>
+						</div>				
+						<div class="form-group">
+							<label class="col-sm-3" for="segmentProfit">Ожидаемая прибыль</label>
+							<div class="col-sm-9">
+								<input type="number" class="form-control" id="segmentProfit" placeholder="0,00" ng-model="item.segmentProfit">
+							</div>
+						</div>				
+					</div>
+					<!-- .panel-body form-horizontal -->
 				</div> 
 				<!-- .panel panel-default -->
+				<div class="panel panel-default" id="segmentServices">
+					<div class="panel-heading">
+						<h4 class="panel-title">Потребность в сервисе</h4>
+					</div>					
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="panel panel-default">
+									<div class="panel-heading"><h5 class="panel-title">АТМ</h5></div>
+									<div class="panel-body">
+										<div class="checkbox">
+											<label><input type="checkbox" id="atmRadio1" value="Инкассация" ng-model="item.segmentServices">Инкассация</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<p>{{item.segmentServices}}</p>
+					</div>
+					<!-- .panel-body -->
+				</div>
+				<!-- .panel panel-default #services -->
 			</div>
 			<!-- .container-fluid -->
 		</div>

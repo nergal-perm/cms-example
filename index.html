@@ -9,22 +9,20 @@
 		
 		<link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="libs/angular-bootstrap/ui-bootstrap-csp.css">
-
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/bootstrap/dist/js/bootstrap.js"></script>
 	</head>
 	<body>
 		<div class="container">
 			<div class="content" ng-view></div>
 		</div>
-		<script src="libs/jquery/dist/jquery.js"></script>
-		<script src="libs/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="libs/angular/angular.js"></script>
 		<script src="libs/angular-route/angular-route.js"></script>
-		<script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>		
 		<script src="libs/angular-cookies/angular-cookies.js"></script>
 		<script src="js/app.js"></script>
-		<script src="js/controllers.js"></script>
-		<script src="login/login.controller.js"></script>	
-		<script src="app-services/authentication.service.js"></script>
-		<script src="app-services/user.service.js"></script>
+		<script src="authentication/controllers.js"></script>	
+		<script src="authentication/services.js"></script>
+		<script src="main/controllers.js"></script>
 	</body>
 </html>

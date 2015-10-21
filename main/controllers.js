@@ -1,7 +1,8 @@
 'use strict';
 
-var cmsControllers = angular.module('cmsControllers', []);
-cmsControllers.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($scope, $uibModal) {
+angular.module('DataEntry')
+
+.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($scope, $uibModal) {
 	$scope.records = [];
 
 	$scope.records.push({
@@ -60,7 +61,7 @@ cmsControllers.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($s
 
 	$scope.open = function (index) {
 		var modalInstance = $uibModal.open({
-			templateUrl: 'partials/myModalContent.html',
+			templateUrl: 'main/views/myModalContent.html',
 			controller: 'ModalCtrl',
 			resolve: {
 				itemFromView: function () {
@@ -85,9 +86,11 @@ cmsControllers.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($s
 		});
 	};
 
-}]);
+}])
 
-cmsControllers.controller('ModalCtrl', ['$scope', '$modalInstance', 'itemFromView', function ModalCtrl($scope, $modalInstance, itemFromView) {
+.controller('ModalCtrl', 
+	['$scope', '$modalInstance', 'itemFromView', 
+	function ModalCtrl($scope, $modalInstance, itemFromView) {
 	 
 	 if (itemFromView) {
 		var itemToEdit = itemFromView;

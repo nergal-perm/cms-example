@@ -2,10 +2,26 @@
 
 angular.module('DataEntry')
 
-.controller('CmsCtrl', ['$scope', '$uibModal', function CmsCtrl($scope, $uibModal) {
-	$scope.records = [];
+.controller('CmsCtrl', 
+	['$scope', '$uibModal', 'DataService', 
+	function CmsCtrl($scope, $uibModal, DataService) {
 
-	$scope.records.push({
+		function init() {
+			$scope.records = [];
+			
+			DataService.getAllActiveRecords().then(function(response) {
+				response.rows.forEach(function(element) {
+					$scope.records.push(element.doc);	
+				}, this);
+				console.log(JSON.stringify(response));
+			});			
+		};
+		
+		init();
+
+
+	DataService.addRecord({
+		_id: "sberbank",
 		clientName: "Сбербанк",
 		contactFullName: "Иванов Иван Иванович",
 		contactJobTitle: "менеджер отдела развития бизнеса",
@@ -31,7 +47,8 @@ angular.module('DataEntry')
 		actions: [{ actionType: "Контакт: email", actionDate: "10.10.2015" }]
 	});
 
-	$scope.records.push({
+	DataService.addRecord({
+		_id: "vtb24",
 		clientName: "ВТБ 24",
 		contactFullName: "Андреев Андрей Андреевич",
 		contactJobTitle: "простой клерк",
@@ -77,7 +94,9 @@ angular.module('DataEntry')
 		modalInstance.result.then(function (updatedItem) {
 			if (updatedItem.index == null) {
 				updatedItem.index = $scope.records.length;
-				$scope.records.push(updatedItem);
+				//$scope.records.push(updatedItem);
+				updatedItem._id = new Date().toISOString();
+				DataService.addRecord(updatedItem);
 			} else {
 				$scope.records[updatedItem.index] = updatedItem;
 			}

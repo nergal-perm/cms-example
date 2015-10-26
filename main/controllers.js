@@ -5,76 +5,37 @@ angular.module('DataEntry')
 .controller('CmsCtrl', 
 	['$scope', '$uibModal', 'DataService', 
 	function CmsCtrl($scope, $uibModal, DataService) {
+		var lookup={};
 
 		function init() {
-			$scope.records = [];
 			
-			DataService.getAllActiveRecords().then(function(response) {
-				response.rows.forEach(function(element) {
-					$scope.records.push(element.doc);	
-				}, this);
-				console.log(JSON.stringify(response));
-			});			
+			DataService.sync();
+			DataService.watchChanges(updateView);
+
+			updateView();
+			initLookup();
+			console.log(JSON.stringify(lookup));
 		};
 		
 		init();
 
+		function initLookup() {
+			for (var i=0, len=$scope.records.length; i<len; i++) {
+				lookup[$scope.records[i]._id] = $scope.records[i];
+			};
+		};
 
-	DataService.addRecord({
-		_id: "sberbank",
-		clientName: "Сбербанк",
-		contactFullName: "Иванов Иван Иванович",
-		contactJobTitle: "менеджер отдела развития бизнеса",
-		contactPhone: "+1234567890",
-		contactMobile: "+1234567890",
-		contactEmail: "ivanov@sberbank.example",
-		contactBirthDate: "23.05.1984",
-		bossFullName: "Петров Петр Петрович",
-		bossJobTitle: "руководитель отделения",
-		bossPhone: "+9876543210",
-		bossMobile: "+9876543210",
-		bossEmail: "petrov@sberbank.example",
-		bossBirthDate: "31.03.1984",
-		segmentName: "Прибыльный ЦЕЛЕВОЙ",
-		segmentRevenue: 400000,
-		segmentProfit: 5,
-		segmentServices: ["atm-AMS", "log-Городские"],
-		statusName: "Убеждение",
-		nextAction: {
-			actionType: "Контакт:звонок",
-			actionDate: "13.10.2015"
-		},
-		actions: [{ actionType: "Контакт: email", actionDate: "10.10.2015" }]
-	});
-
-	DataService.addRecord({
-		_id: "vtb24",
-		clientName: "ВТБ 24",
-		contactFullName: "Андреев Андрей Андреевич",
-		contactJobTitle: "простой клерк",
-		contactPhone: "+1234567890",
-		contactMobile: "+1234567890",
-		contactEmail: "andreev@vtb24.example",
-		contactBirthDate: "23.05.1984",
-		bossFullName: "Сидоров Сидор Сидорович",
-		bossJobTitle: "непростой руководитель",
-		bossPhone: "+9876543210",
-		bossMobile: "+9876543210",
-		bossEmail: "petrov@vtb24.example",
-		bossBirthDate: "31.03.1984",
-		segmentName: "Прибыльный НЕЦЕЛЕВОЙ",
-		segmentRevenue: 150000,
-		segmentProfit: 10,
-		segmentServices: ["log-Региональные", "ams-Страхование"],
-		statusName: "Резерв",
-		nextAction: {
-			actionType: "Контакт:звонок",
-			actionDate: "25.10.2015"
-		},
-		actions: [{ actionType: "Контакт: email", actionDate: "10.10.2014" }]
-	});
-
-
+		function updateView() {
+			if(!$scope.records) {
+			 $scope.records	= [];
+			}
+			$scope.records.length = 0;
+			DataService.getAllActiveRecords().then(function(response) {
+				response.rows.forEach(function(element) {
+					$scope.records.push(element.doc);
+				}, this);
+			});
+		};
 
 	$scope.open = function (index) {
 		var modalInstance = $uibModal.open({
@@ -83,7 +44,6 @@ angular.module('DataEntry')
 			resolve: {
 				itemFromView: function () {
 					if (index != null) {
-						$scope.records[index].index = index;
 						return $scope.records[index];
 					}
 					return null;
@@ -92,14 +52,25 @@ angular.module('DataEntry')
 		});
 
 		modalInstance.result.then(function (updatedItem) {
-			if (updatedItem.index == null) {
-				updatedItem.index = $scope.records.length;
-				//$scope.records.push(updatedItem);
+			if (!updatedItem._id) {
+				// New item
 				updatedItem._id = new Date().toISOString();
-				DataService.addRecord(updatedItem);
 			} else {
-				$scope.records[updatedItem.index] = updatedItem;
+				// Updated item - should check for changed properties
+				var originalItem = lookup[updatedItem._id];
+				if (originalItem.segmentName !== updatedItem.segmentName || 
+					originalItem.segmentRevenue !== updatedItem.segmentRevenue ||
+					originalItem.segmentProfit !== updatedItem.segmentProfit ||
+					originalItem.statusName !== updatedItem.statusName) {
+						// Need to create another document
+						originalItem.cancelled = new Date().toISOString();
+						DataService.addRecord(originalItem);
+						updatedItem._id = new Date().toISOString();
+				};
 			}
+			//$scope.records[updatedItem.index] = updatedItem;
+			console.log('ID: ' + updatedItem._id + ', rev: ' + updatedItem._rev);
+			DataService.addRecord(updatedItem);
 		}, function () {
 			console.log('Modal dismissed at: ' + new Date());
 		});
@@ -114,6 +85,8 @@ angular.module('DataEntry')
 	 if (itemFromView) {
 		var itemToEdit = itemFromView;
 		$scope.item = {};
+		$scope.item._id = itemToEdit._id;
+		$scope.item._rev = itemToEdit._rev;
 		$scope.item.index = itemToEdit.index;
 		$scope.item.clientName = itemToEdit.clientName;
 		$scope.item.contactFullName = itemToEdit.contactFullName;

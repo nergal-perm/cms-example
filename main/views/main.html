@@ -10,7 +10,7 @@
 					<th>Ожидаемая прибыль</th>
 					<th>Статус</th>
 				</tr>
-				<tr ng-repeat="details in records track by details.clientName">
+				<tr ng-repeat="details in records track by details._id">
 					<td>{{details.clientName}}</td>
 					<td>{{details.segmentName}}</td>
 					<td>{{details.segmentRevenue}}</td>

@@ -2,11 +2,13 @@
 
 // declare modules
 angular.module('Authentication', []);
+angular.module('Test', []);
 angular.module('DataEntry', ['ui.bootstrap']);
 
 angular.module('cmsAngular', [
     'Authentication',
     'DataEntry',
+		'Test',
     'ngRoute',
     'ngCookies'
 ])
@@ -23,6 +25,11 @@ angular.module('cmsAngular', [
             controller: 'CmsCtrl',
             templateUrl: 'main/views/main.html'
         })
+
+				.when('/test', {
+					controller: 'TestCtrl',
+					templateUrl: 'test/views/test.html'
+				})
 
         .otherwise({ redirectTo: '/login' });
 }])
@@ -41,7 +48,7 @@ angular.module('cmsAngular', [
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in and trying to access a restricted page
-        var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+        var restrictedPage = $.inArray($location.path(), ['/login', '/register', '/test']) === -1;
         var loggedIn = $rootScope.globals.currentUser;
         console.log("Is restricted: " + restrictedPage + ", is Logged In: " + JSON.stringify(loggedIn));
         if (restrictedPage && !loggedIn) {

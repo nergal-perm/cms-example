@@ -11,9 +11,10 @@
 		<div role="tabpanel" class="tab-pane active" id="client">
 			<div class="container-fluid">
 				<br />
+				<form name="clientData">
 				<div class="form-group">
 					<label for="clientName">Название клиента</label>
-					<input type="text" class="form-control" id="clientName" placeholder="Название клиента" ng-model="item.clientName">
+					<input type="text" class="form-control" id="clientName" placeholder="Название клиента" ng-model="item.clientName" required />
 				</div>
 				<div class="panel-group" id="accordionClient" role="tablist" aria-multiselectable="true">
 					<div class="panel panel-default" id="contactDetals">
@@ -113,6 +114,7 @@
 
 				</div>
 				<!-- .panel-group #accordionClient -->
+				</form>
 			</div>
 			<!-- .container-fluid -->
 		</div>
@@ -318,6 +320,9 @@
 										<input type="text" class="form-control" id="nextActionDate" ng-model="item.nextAction.actionDate">
 									</div>
 								</div>
+								<div>
+									<button class="btn btn-primary" type="button" ng-click="markActionAsDone()">Выполнить</button>		
+								</div>
 							</div>
 							<!-- .panel-body form-horizontal -->
 						</div>
@@ -338,7 +343,7 @@
 										<th>Дата действия</th>
 										<th>Вид действия</th>
 									</tr>
-									<tr ng-repeat="action in item.actions">
+									<tr ng-repeat="action in item.actions track by (action.actionType + action.actionDate)">
 										<td>{{action.actionDate}}</td>
 										<td>{{action.actionType}}</td>
 									</tr>
@@ -358,6 +363,6 @@
 	</div>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-primary" type="button" ng-click="ok()" ng-disabled="clientData.$invalid">OK</button>
 	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>

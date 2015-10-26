@@ -1,7 +1,4 @@
-<h1>Test CouchDB connection</h1>
-<p>Total records: {{records.length}}</p>
-<div ng-repeat="item in records">
-	<ul>
-		<li>{{item.id}}</li>
-	</ul>
-</div>
+<h1>Test CouchDB maintenance</h1>
+<button class="btn btn-primary" ng-click="createCouchDb()">Создать серверную БД</button>
+<button class="btn btn-danger" ng-click="deleteCouchDb()">Удалить серверную БД</button>
+<button class="btn btn-warning" ng-click="clearPouchDb()">Очистить кэш БД</button>

@@ -2,12 +2,49 @@
 
 angular.module('Test')
 
-.controller('TestCtrl', ['$scope', '$http', function($scope, $http) {
-	$http.get('http://localhost:5984/brinks/_all_docs')
-		.success(function(response) {
-			console.log('Successfully fetched data');
-			console.log(JSON.stringify(response.rows));
-			$scope.records = response.rows;
-		});
+.controller('TestCtrl', function($scope, $http, appSettings) {
 
-}]);
+	var viewDoc = {
+   _id: "_design/clients",
+   language: "javascript",
+   views: {
+       active: {
+           map: "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc._id, doc);\n  }\n}"
+       }
+   }
+	};
+
+	function createCouchDb() {
+		$http.put(appSettings.db, '', {
+			withCredentials: true
+		})
+			.success(function(response) {
+				$http.put(appSettings.db + '/_design/clients', viewDoc);
+			})
+			.error(function(err) {
+				console.log(err);
+			});
+	}
+	
+	function deleteCouchDb() {
+		$http.delete(appSettings.db)
+			.success(function(response) {
+				console.log(response);
+			})
+			.error(function(err) {
+				console.log(err);
+			});
+	}	
+	
+	function clearPouchDb() {
+		var db = new PouchDB('brinks');
+		db.destroy().then(function(response) {
+			console.log(response);
+		});
+	}
+	
+	$scope.createCouchDb = createCouchDb;
+	$scope.clearPouchDb = clearPouchDb;
+	$scope.deleteCouchDb = deleteCouchDb;
+
+});

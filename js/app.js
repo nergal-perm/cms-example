@@ -2,12 +2,14 @@
 
 // declare modules
 angular.module('Authentication', []);
-angular.module('Test', []);
-angular.module('DataEntry', ['ui.bootstrap']);
+angular.module('Test', ['Config']);
+angular.module('DataEntry', ['ui.bootstrap', 'Config']);
+angular.module('Config', []);
 
 angular.module('cmsAngular', [
     'Authentication',
     'DataEntry',
+    'Config',
 		'Test',
     'ngRoute',
     'ngCookies'
@@ -33,10 +35,6 @@ angular.module('cmsAngular', [
 
         .otherwise({ redirectTo: '/login' });
 }])
-
-.constant('appSettings', {
-  db: 'http://localhost:5984/brinks'
-})
 
 .run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {

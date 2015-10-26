@@ -2,10 +2,10 @@
 
 angular.module('DataEntry')
 
-.factory('DataService', function($q) {
+.factory('DataService', function($q, appSettings) {
 	var service= {};
 	var db = new PouchDB('brinks');
-	var remoteCouch = 'http://localhost:5984/brinks';
+	var remoteCouch = appSettings.db;
 
 	function watchChanges(callback) {
 		db.changes({
@@ -20,19 +20,28 @@ angular.module('DataEntry')
 	function sync() {
 		var opts = {live: true};
 		db.sync(remoteCouch, opts);
-		console.log('Database synced');
 	}
 	
 	service.sync = sync;
 	service.watchChanges = watchChanges;
+	service.dbAddress = remoteCouch;
 
 	service.addRecord = function(record) {
-		console.log('Start adding...');
-		db.put(record, record._id, record._rev, function callback(err, result) {
-			if (!err) {
-				console.log('Successfully added a record');
-			} else {
-				console.log(err);
+		if (record._rev) {
+			db.put(record, record._id, record._rev);
+		} else {
+			db.put(record);
+		}
+	};
+	
+	service.bulkRecords = function(records) {
+		db.bulkDocs(records)
+		.then(function(result) {
+			console.log('Successful bulk update');
+		})
+		.then(function(err) {
+			if(err) {
+				console.log('Error while bulk update: ' + err);
 			};
 		});
 	};
@@ -40,14 +49,11 @@ angular.module('DataEntry')
 	
 	service.getAllActiveRecords = function() {
 		return $q(function(resolve, reject) {
-				db.query('clients/active', {include_docs: true, descending: true}, 
+				db.query(appSettings.activeRecordsQuery, {include_docs: true, descending: true}, 
 				function(err, doc) {
 					if(err) {
-						console.log('Error in DataService');
 						reject(err);
 					} else {
-						console.log('Success in DataService');
-						console.log(JSON.stringify)
 						resolve(doc);
 					}
 				});
@@ -55,4 +61,56 @@ angular.module('DataEntry')
 	};
 	
 	return service;
+})
+
+.factory('Translit', function() {
+	var service = {};
+	var space = '-';
+	
+		
+	// Массив для транслитерации
+	var transl = {
+	'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e', 'ж': 'zh',
+	'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+	'о': 'o', 'п': 'p', 'р': 'r','с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h',
+	'ц': 'c', 'ч': 'ch', 'ш': 'sh', 'щ': 'sh','ъ': space, 'ы': 'y', 'ь': space, 'э': 'e', 'ю': 'yu', 'я': 'ya',
+	' ': space, '_': space, '`': space, '~': space, '!': space, '@': space,
+	'#': space, '$': space, '%': space, '^': space, '&': space, '*': space,
+	'(': space, ')': space,'-': space, '\=': space, '+': space, '[': space,
+	']': space, '\\': space, '|': space, '/': space,'.': space, ',': space,
+	'{': space, '}': space, '\'': space, '"': space, ';': space, ':': space,
+	'?': space, '<': space, '>': space, '№':space
+	}
+								
+
+
+	service.translit = function(rusText) {
+		var text = rusText.toLowerCase();
+		var result = '';
+		var curent_sim = '';	
+		
+		for(var i=0; i < text.length; i++) {
+				// Если символ найден в массиве то меняем его
+				if(transl[text[i]] != undefined) {
+						if(curent_sim != transl[text[i]] || curent_sim != space){
+								result += transl[text[i]];
+								curent_sim = transl[text[i]];
+						}
+				}
+				// Если нет, то оставляем так как есть
+				else {
+						result += text[i];
+						curent_sim = text[i];
+				}                             
+		}         		
+		return this.TrimStr(result);			
+	};
+
+	service.TrimStr = function (s) {
+			s = s.replace(/^-/, '');
+			return s.replace(/-$/, '');
+	};
+		
+	return service;		
+		
 });

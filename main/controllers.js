@@ -3,37 +3,31 @@
 angular.module('DataEntry')
 
 .controller('CmsCtrl', 
-	['$scope', '$uibModal', 'DataService', 
-	function CmsCtrl($scope, $uibModal, DataService) {
+	['$scope', '$uibModal', 'DataService', 'Translit', 
+	function CmsCtrl($scope, $uibModal, DataService, Translit) {
 		var lookup={};
+		var records = [];
+		
 
 		function init() {
-			
-			DataService.sync();
+			$scope.records = [];	
 			DataService.watchChanges(updateView);
-
+			DataService.sync();
 			updateView();
-			initLookup();
-			console.log(JSON.stringify(lookup));
 		};
 		
 		init();
 
-		function initLookup() {
-			for (var i=0, len=$scope.records.length; i<len; i++) {
-				lookup[$scope.records[i]._id] = $scope.records[i];
-			};
-		};
-
 		function updateView() {
-			if(!$scope.records) {
-			 $scope.records	= [];
-			}
-			$scope.records.length = 0;
+			console.log('updating view');
+			records.length = 0;
+			$scope.records.length = 0;	
 			DataService.getAllActiveRecords().then(function(response) {
 				response.rows.forEach(function(element) {
-					$scope.records.push(element.doc);
+					records.push(element.doc);
+					lookup[element.doc._id] = element.doc;
 				}, this);
+				$scope.records = records;
 			});
 		};
 
@@ -52,9 +46,11 @@ angular.module('DataEntry')
 		});
 
 		modalInstance.result.then(function (updatedItem) {
+			var recordsToWrite = [];
 			if (!updatedItem._id) {
 				// New item
-				updatedItem._id = new Date().toISOString();
+				updatedItem._id = 'client:' + Translit.translit(updatedItem.clientName) + ':1';
+				updatedItem.created = new Date().toISOString();
 			} else {
 				// Updated item - should check for changed properties
 				var originalItem = lookup[updatedItem._id];
@@ -64,13 +60,15 @@ angular.module('DataEntry')
 					originalItem.statusName !== updatedItem.statusName) {
 						// Need to create another document
 						originalItem.cancelled = new Date().toISOString();
-						DataService.addRecord(originalItem);
-						updatedItem._id = new Date().toISOString();
+						var originalId = originalItem._id.split(':');
+						var newId = originalId.slice(0,2);
+						newId.push(++originalId[2]);
+						updatedItem._id = newId.join(':');
+						recordsToWrite.push(originalItem);
 				};
 			}
-			//$scope.records[updatedItem.index] = updatedItem;
-			console.log('ID: ' + updatedItem._id + ', rev: ' + updatedItem._rev);
-			DataService.addRecord(updatedItem);
+			recordsToWrite.push(updatedItem);
+			DataService.bulkRecords(recordsToWrite);
 		}, function () {
 			console.log('Modal dismissed at: ' + new Date());
 		});
@@ -129,6 +127,11 @@ angular.module('DataEntry')
 			 $scope.item.segmentServices.splice($scope.item.segmentServices.indexOf(service), 1);
 		 };
 	 };
+
+		$scope.markActionAsDone = function() {
+			$scope.item.actions.push($scope.item.nextAction);
+			$scope.item.nextAction = {};
+		};
 
 	 $scope.ok = function () {
 		$modalInstance.close($scope.item);

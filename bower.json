@@ -20,11 +20,16 @@
   "dependencies": {
     "angular": "~1.4.7",
     "angular-bootstrap": "~0.14.1",
+    "angular-chart.js": "~0.8.5",
     "angular-cookies": "~1.4.7",
     "angular-resource": "~1.4.7",
     "angular-route": "~1.4.7",
     "bootstrap": "~3.3.5",
     "jquery": "~2.1.4",
-    "pouchdb": "~5.0.0"
+    "pouchdb": "~5.0.0",
+    "ZingChart-AngularJS": "zingchart-angularjs#~1.0.6"
+  },
+  "resolutions": {
+    "angular": "1.4.7"
   }
 }

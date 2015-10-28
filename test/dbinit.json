@@ -1,9 +1,0 @@
-{
-   "_id": "_design/clients",
-   "language": "javascript",
-   "views": {
-       "active": {
-           "map": "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc._id, doc);\n  }\n}"
-       }
-   }
-}

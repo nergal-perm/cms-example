@@ -6,7 +6,6 @@ angular.module('Authentication')
     ['$scope', '$rootScope', '$location', 'AuthenticationService', 'appSettings',
     function ($scope, $rootScope, $location, AuthenticationService, appSettings) {
         // reset login status
-        console.log(appSettings);
         AuthenticationService.ClearCredentials();
 
         $scope.login = function () {

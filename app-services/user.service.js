@@ -14,7 +14,7 @@ function UserService($timeout, $filter, $q) {
 	function GetByUserName(username) {
 		var deferred = $q.defer();
 		var filtered = $filter('filter')(getUsers(), { username: username });
-		var user = filered.length ? filtered[0] : null;
+		var user = filtered.length ? filtered[0] : null;
 		deferred.resolve(user);
 		return deferred.promise;
 	};	

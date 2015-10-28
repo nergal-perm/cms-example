@@ -5,14 +5,17 @@ angular.module('Authentication', []);
 angular.module('Test', ['Config']);
 angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Config', []);
+angular.module('Chart', []);
 
 angular.module('cmsAngular', [
     'Authentication',
     'DataEntry',
+    'Chart',
     'Config',
 		'Test',
     'ngRoute',
-    'ngCookies'
+    'ngCookies',
+    'zingchart-angularjs'
 ])
 
 .config(['$routeProvider', function ($routeProvider) {
@@ -32,6 +35,11 @@ angular.module('cmsAngular', [
 					controller: 'TestCtrl',
 					templateUrl: 'test/views/test.html'
 				})
+        
+        .when('/chart', {
+          controller: 'ChartCtrl',
+          templateUrl: 'chart/views/chart.html'
+        })
 
         .otherwise({ redirectTo: '/login' });
 }])
@@ -46,7 +54,7 @@ angular.module('cmsAngular', [
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in and trying to access a restricted page
-        var restrictedPage = $.inArray($location.path(), ['/login', '/register', '/test']) === -1;
+        var restrictedPage = $.inArray($location.path(), ['/login', '/chart', '/test']) === -1;
         var loggedIn = $rootScope.globals.currentUser;
         console.log("Is restricted: " + restrictedPage + ", is Logged In: " + JSON.stringify(loggedIn));
         if (restrictedPage && !loggedIn) {

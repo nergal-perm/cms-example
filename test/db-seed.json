@@ -1,0 +1,85 @@
+{
+  "docs": [
+    {
+      "_id":"client:sberbank",
+      "clientName": "Сбербанк",
+      "contactFullName": "Иванов Иван Иванович",
+      "contactJobTitle": "менеджер отдела развития бизнеса",
+      "contactPhone": "+1234567890",
+      "contactMobile": "+1234567890",
+      "contactEmail": "ivanov@sberbank.example",
+      "contactBirthDate": "23.05.1984",
+      "bossFullName": "Петров Петр Петрович",
+      "bossJobTitle": "руководитель отделения",
+      "bossPhone": "+9876543210",
+      "bossMobile": "+9876543210",
+      "bossEmail": "petrov@sberbank.example",
+      "bossBirthDate": "31.03.1984",
+      "segmentName": "Прибыльный ЦЕЛЕВОЙ",
+      "segmentRevenue": "400000",
+      "segmentProfit": "5",
+      "segmentServices": ["atm-AMS", "log-Городские"],
+      "statusName": "Убеждение",
+      "nextAction": {
+        "actionType": "Контакт:звонок",
+        "actionDate": "13.10.2015"
+      },
+      "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
+      "created": "2015-05-28T03:53:45.379Z"      
+    },
+    {
+      "_id": "client:vtb24",
+      "clientName": "ВТБ 24",
+      "contactFullName": "Андреев Андрей Андреевич",
+      "contactJobTitle": "простой клерк",
+      "contactPhone": "+1234567890",
+      "contactMobile": "+1234567890",
+      "contactEmail": "andreev@vtb24.example",
+      "contactBirthDate": "23.05.1984",
+      "bossFullName": "Сидоров Сидор Сидорович",
+      "bossJobTitle": "непростой руководитель",
+      "bossPhone": "+9876543210",
+      "bossMobile": "+9876543210",
+      "bossEmail": "petrov@vtb24.example",
+      "bossBirthDate": "31.03.1984",
+      "segmentName": "Прибыльный НЕЦЕЛЕВОЙ",
+      "segmentRevenue": "150000",
+      "segmentProfit": "10",
+      "segmentServices": ["log-Региональные", "ams-Страхование"],
+      "statusName": "Резерв",
+      "nextAction": {
+        "actionType": "Контакт:звонок",
+        "actionDate": "25.10.2015"
+      },
+      "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2014" }],
+      "created": "2015-06-28T03:53:45.379Z"
+    },
+    {
+      "_id":"client:bank-primer",
+      "clientName": "Банк \"Пример\" ",
+      "contactFullName": "Сергеев Сергей Сергеевич",
+      "contactJobTitle": "менеджер отдела развития бизнеса",
+      "contactPhone": "+1234567890",
+      "contactMobile": "+1234567890",
+      "contactEmail": "ivanov@sberbank.example",
+      "contactBirthDate": "23.05.1984",
+      "bossFullName": "Александров Александр Александрович",
+      "bossJobTitle": "руководитель отделения",
+      "bossPhone": "+9876543210",
+      "bossMobile": "+9876543210",
+      "bossEmail": "petrov@sberbank.example",
+      "bossBirthDate": "31.03.1984",
+      "segmentName": "Прибыльный ЦЕЛЕВОЙ",
+      "segmentRevenue": "500000",
+      "segmentProfit": "5",
+      "segmentServices": ["atm-AMS", "log-Городские"],
+      "statusName": "Убеждение",
+      "nextAction": {
+        "actionType": "Контакт:звонок",
+        "actionDate": "13.10.2015"
+      },
+      "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
+      "created": "2015-05-28T03:53:45.379Z"      
+    }    
+  ]
+}

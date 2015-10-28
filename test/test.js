@@ -4,22 +4,17 @@ angular.module('Test')
 
 .controller('TestCtrl', function($scope, $http, appSettings) {
 
-	var viewDoc = {
-   _id: "_design/clients",
-   language: "javascript",
-   views: {
-       active: {
-           map: "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc._id, doc);\n  }\n}"
-       }
-   }
-	};
-
 	function createCouchDb() {
 		$http.put(appSettings.db, '', {
 			withCredentials: true
 		})
 			.success(function(response) {
-				$http.put(appSettings.db + '/_design/clients', viewDoc);
+				$http.get('test/designClients.json').success(function(response) {
+					$http.put(appSettings.db + '/_design/clients', response);	
+				});
+				$http.get('test/db-seed.json').success(function(response) {
+					$http.post(appSettings.db + '/_bulk_docs', response);
+				});
 			})
 			.error(function(err) {
 				console.log(err);

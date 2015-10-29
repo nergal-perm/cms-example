@@ -5,7 +5,7 @@ angular.module('Authentication', []);
 angular.module('Test', ['Config']);
 angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Config', []);
-angular.module('Chart', []);
+angular.module('Chart', ['DataEntry']);
 
 angular.module('cmsAngular', [
     'Authentication',
@@ -36,8 +36,13 @@ angular.module('cmsAngular', [
 					templateUrl: 'test/views/test.html'
 				})
         
-        .when('/chart', {
-          controller: 'ChartCtrl',
+        .when('/charts/status/:chartType', {
+          controller: 'StatusCtrl',
+          templateUrl: 'chart/views/chart.html'
+        })
+
+        .when('/charts/dynamics/:chartType/:year', {
+          controller: 'DynamicsCtrl',
           templateUrl: 'chart/views/chart.html'
         })
 

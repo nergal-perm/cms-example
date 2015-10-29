@@ -46,7 +46,6 @@ angular.module('DataEntry')
 		});
 	};
 	
-	
 	service.getAllActiveRecords = function() {
 		return $q(function(resolve, reject) {
 				db.query(appSettings.activeRecordsQuery, {include_docs: true, descending: true}, 
@@ -59,7 +58,65 @@ angular.module('DataEntry')
 				});
 		});
 	};
+
+	service.getCurrentStatus = function(qt) {
+		var queryType = {
+			segment: appSettings.currentSegmentStatus,
+			funnel: appSettings.currentFunnelStatus
+		};
+		
+		return $q(function(resolve, reject) {
+			db.query(queryType[qt], {group: true}, function(err,doc) {
+				if(err) {
+					console.log(err);
+					reject(err);
+				} else {
+					console.log(doc);
+					resolve(doc);
+				}
+			});
+		});	
+	};
 	
+	service.getFunnelDynamics = function(year) {
+		var promises = [];
+		var dtb = new Date(year,0,1);
+		var dte = new Date(year,11,31);
+		
+		promises.push($q(function(resolve, reject) {
+			db.query(appSettings.funnelStart, {
+				endkey: dte.toISOString()
+			}, 
+			function(err,doc) {
+				if(err) {
+					console.log(err.message);
+					reject(err);
+				} else {
+					console.log(doc);
+					resolve(doc);
+				}
+			});
+		}));
+		
+		promises.push($q(function(resolve, reject) {
+			db.query(appSettings.funnelEnd, {
+				startKey: dtb.toISOString(),
+				descending: true
+			},  
+			function(err,doc) {
+				if(err) {
+					console.log(err.message);
+					reject(err);
+				} else {
+					console.log(doc);
+					resolve(doc);
+				}
+			});
+		}));
+		
+		return $q.all(promises);		
+	};
+
 	return service;
 })
 

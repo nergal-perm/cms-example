@@ -12,6 +12,9 @@ angular.module('Test')
 				$http.get('test/designClients.json').success(function(response) {
 					$http.put(appSettings.db + '/_design/clients', response);	
 				});
+				$http.get('test/designFunnel.json').success(function(response) {
+					$http.put(appSettings.db + '/_design/funnel', response);	
+				});				
 				$http.get('test/db-seed.json').success(function(response) {
 					$http.post(appSettings.db + '/_bulk_docs', response);
 				});

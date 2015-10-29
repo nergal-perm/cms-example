@@ -1,0 +1,16 @@
+{
+	"_id": "-design/funnel",
+	"language": "javascript",
+	"views": {
+		"currentStatus": {
+			"map": "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc.statusName);\n  }\n}",
+      "reduce": "_count"
+		},
+		"byCreatedDate": {
+			"map": "function(doc) {\n  emit(doc.created, doc.statusName);\n}"
+		},
+		"byCancelledDate": {
+			"map": "function(doc) {\n  emit(doc.cancelled, doc.statusName);\n}"
+		}
+	}
+}

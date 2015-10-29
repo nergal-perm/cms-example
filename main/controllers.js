@@ -50,7 +50,6 @@ angular.module('DataEntry')
 			if (!updatedItem._id) {
 				// New item
 				updatedItem._id = 'client:' + Translit.translit(updatedItem.clientName) + ':1';
-				updatedItem.created = new Date().toISOString();
 			} else {
 				// Updated item - should check for changed properties
 				var originalItem = lookup[updatedItem._id];
@@ -67,6 +66,7 @@ angular.module('DataEntry')
 						recordsToWrite.push(originalItem);
 				};
 			}
+			updatedItem.created = new Date().toISOString();
 			recordsToWrite.push(updatedItem);
 			DataService.bulkRecords(recordsToWrite);
 		}, function () {

@@ -1,7 +1,7 @@
 {
   "docs": [
     {
-      "_id":"client:sberbank",
+      "_id":"client:sberbank:1",
       "clientName": "Сбербанк",
       "contactFullName": "Иванов Иван Иванович",
       "contactJobTitle": "менеджер отдела развития бизнеса",
@@ -16,8 +16,8 @@
       "bossEmail": "petrov@sberbank.example",
       "bossBirthDate": "31.03.1984",
       "segmentName": "Прибыльный ЦЕЛЕВОЙ",
-      "segmentRevenue": "400000",
-      "segmentProfit": "5",
+      "segmentRevenue": 400000,
+      "segmentProfit": 5,
       "segmentServices": ["atm-AMS", "log-Городские"],
       "statusName": "Убеждение",
       "nextAction": {
@@ -25,10 +25,10 @@
         "actionDate": "13.10.2015"
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
-      "created": "2015-05-28T03:53:45.379Z"      
+      "created": "2015-01-01T03:53:45.379Z"  
     },
     {
-      "_id": "client:vtb24",
+      "_id": "client:vtb24:1",
       "clientName": "ВТБ 24",
       "contactFullName": "Андреев Андрей Андреевич",
       "contactJobTitle": "простой клерк",
@@ -43,8 +43,8 @@
       "bossEmail": "petrov@vtb24.example",
       "bossBirthDate": "31.03.1984",
       "segmentName": "Прибыльный НЕЦЕЛЕВОЙ",
-      "segmentRevenue": "150000",
-      "segmentProfit": "10",
+      "segmentRevenue": 150000,
+      "segmentProfit": 10,
       "segmentServices": ["log-Региональные", "ams-Страхование"],
       "statusName": "Резерв",
       "nextAction": {
@@ -55,7 +55,7 @@
       "created": "2015-06-28T03:53:45.379Z"
     },
     {
-      "_id":"client:bank-primer",
+      "_id":"client:bank-primer:1",
       "clientName": "Банк \"Пример\" ",
       "contactFullName": "Сергеев Сергей Сергеевич",
       "contactJobTitle": "менеджер отдела развития бизнеса",
@@ -70,8 +70,8 @@
       "bossEmail": "petrov@sberbank.example",
       "bossBirthDate": "31.03.1984",
       "segmentName": "Прибыльный ЦЕЛЕВОЙ",
-      "segmentRevenue": "500000",
-      "segmentProfit": "5",
+      "segmentRevenue": 500000,
+      "segmentProfit": 5,
       "segmentServices": ["atm-AMS", "log-Городские"],
       "statusName": "Убеждение",
       "nextAction": {

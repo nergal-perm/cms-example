@@ -2,7 +2,13 @@
 
 angular.module('Test')
 
-.controller('TestCtrl', function($scope, $http, appSettings) {
+.controller('TestCtrl', [
+	'$scope', '$http', 'appSettings', 'AuthenticationService',	
+	function($scope, $http, appSettings, Auth) {
+
+	function init() {
+		Auth.ClearCredentials();
+	};
 
 	function createCouchDb() {
 		$http.put(appSettings.db, '', {
@@ -45,4 +51,5 @@ angular.module('Test')
 	$scope.clearPouchDb = clearPouchDb;
 	$scope.deleteCouchDb = deleteCouchDb;
 
-});
+	init();
+}]);

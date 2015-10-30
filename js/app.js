@@ -2,7 +2,7 @@
 
 // declare modules
 angular.module('Authentication', []);
-angular.module('Test', ['Config']);
+angular.module('Test', ['Config', 'Authentication']);
 angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Config', []);
 angular.module('Chart', ['DataEntry']);

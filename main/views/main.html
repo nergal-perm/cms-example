@@ -1,20 +1,21 @@
 <div class="container">
-	<br />
 	<div class="row">
 		<div class="col-lg-10 col-lg-offset-1">
 			<table class="table">
 				<tr>
 					<th>Клиент</th>
 					<th>Сегмент</th>
-					<th>Ожидаемая выручка</th>
-					<th>Ожидаемая прибыль</th>
+					<th>Ожидаемая выручка, руб</th>
+					<th>Ожидаемая прибыль, %</th>
+					<th>Расчетная прибыль, руб</th>
 					<th>Статус</th>
 				</tr>
 				<tr ng-repeat="details in records track by details._id">
 					<td>{{details.clientName}}</td>
 					<td>{{details.segmentName}}</td>
-					<td>{{details.segmentRevenue}}</td>
+					<td>{{details.segmentRevenue.toLocaleString()}}</td>
 					<td>{{details.segmentProfit}}</td>
+					<td ng-class="{'danger': details.segmentProfit<20, 'success': details.segmentProfit>=20}">{{(details.segmentRevenue * details.segmentProfit / 100).toLocaleString()}}</td>
 					<td>{{details.statusName}}</td>
 					<td><button class="btn btn-primary" ng-click="open($index)"><span class="glyphicon glyphicon-edit"></span> Изменить</button></td>
 				</tr>

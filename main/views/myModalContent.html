@@ -139,17 +139,35 @@
 						</div>
 						<div id="collapseSegmentOne" class="panel-collapse collapse in" role="tabpanel">
 							<div class="panel-body form-horizontal">
-								<div class="form-group">
-									<label class="col-sm-3" for="segmentRevenue">Ожидаемая выручка</label>
-									<div class="col-sm-9">
-										<input type="number" class="form-control" id="segmentRevenue" placeholder="0,00" ng-model="item.segmentRevenue">
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-sm-5"><label for="segmentRevenue">Ожидаемая выручка</label></div>
+										<div class="input-group col-sm-7">
+											<span class="input-group-addon" id="revenue-addon">руб.</span>
+											<input type="number" class="form-control" id="segmentRevenue" placeholder="0,00" ng-model="item.segmentRevenue" aria-describedby="revenue-addon">
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3" for="segmentProfit">Ожидаемая прибыль</label>
-									<div class="col-sm-9">
-										<input type="number" class="form-control" id="segmentProfit" placeholder="0,00" ng-model="item.segmentProfit">
+									<br/>
+									<div class="row">
+										<div class="col-sm-5"><label for="segmentProfit">Ожидаемая прибыль</label></div>
+										<div class="input-group col-sm-7">
+											<span class="input-group-addon" id="profit-addon">%</span>
+											<input type="number" class="form-control" id="segmentProfit" placeholder="0" ng-model="item.segmentProfit" aria-describedby="profit-addon">
+										</div>
 									</div>
+									<br />
+									<div class="row alert alert-danger" role="alert" ng-show="item.segmentProfit<20">
+										<label class="col-sm-5 control-label">Расчетная прибыль</label>
+										<div class="col-sm-7">
+											<p class="form-control-static">{{(item.segmentRevenue * item.segmentProfit / 100).toLocaleString()}} руб.</p>
+										</div>										
+									</div>
+									<div class="row alert alert-success" role="alert" ng-show="item.segmentProfit>=20">
+										<label class="col-sm-5 control-label">Расчетная прибыль</label>
+										<div class="col-sm-7">
+											<p class="form-control-static">{{(item.segmentRevenue * item.segmentProfit / 100).toLocaleString()}} руб.</p>
+										</div>										
+									</div>									
 								</div>
 							</div>
 							<!-- .panel-body form-horizontal -->

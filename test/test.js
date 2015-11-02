@@ -7,7 +7,7 @@ angular.module('Test')
 	function($scope, $http, appSettings, Auth) {
 
 	function init() {
-		Auth.ClearCredentials();
+		//Auth.ClearCredentials();
 	};
 
 	function createCouchDb() {

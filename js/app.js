@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 // declare modules
-angular.module('Authentication', []);
+angular.module('Authentication', ['Config']);
 angular.module('Test', ['Config', 'Authentication']);
 angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Config', []);
@@ -21,9 +21,19 @@ angular.module('cmsAngular', [
 .config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider
+        .when('/welcome', {
+          controller: 'LoginController',
+          templateUrl: 'authentication/views/welcome.html'
+        })
+        
         .when('/login', {
             controller: 'LoginController',
             templateUrl: 'authentication/views/login.html'
+        })
+        
+        .when('/logout', {
+          controller: 'LoginController',
+          templateUrl: 'authentication/views/logout.html'
         })
 
         .when('/main', {
@@ -46,7 +56,7 @@ angular.module('cmsAngular', [
           templateUrl: 'chart/views/chart.html'
         })
 
-        .otherwise({ redirectTo: '/login' });
+        .otherwise({ redirectTo: '/welcome' });
 }])
 
 .run(['$rootScope', '$location', '$cookieStore', '$http',
@@ -59,11 +69,10 @@ angular.module('cmsAngular', [
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in and trying to access a restricted page
-        var restrictedPage = $.inArray($location.path(), ['/login', '/chart', '/test']) === -1;
+        var restrictedPage = $.inArray($location.path(), ['/login', '/logout', '/test', '/welcome']) === -1;
         var loggedIn = $rootScope.globals.currentUser;
-        console.log("Is restricted: " + restrictedPage + ", is Logged In: " + JSON.stringify(loggedIn));
         if (restrictedPage && !loggedIn) {
-            $location.path('/login');
+            $location.path('/welcome');
         }
     });
 }]);

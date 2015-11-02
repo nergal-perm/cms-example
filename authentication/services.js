@@ -3,30 +3,26 @@
 angular.module('Authentication')
 
 .factory('AuthenticationService',
-    ['Base64', '$http', '$cookieStore', '$rootScope', '$timeout',
-    function (Base64, $http, $cookieStore, $rootScope, $timeout) {
+    ['Base64', '$http', '$cookieStore', '$rootScope', 'appSettings',
+    function (Base64, $http, $cookieStore, $rootScope, appSettings) {
         var service = {};
+        var db = new PouchDB(appSettings.db, {skipSetup: true});
 
         service.Login = function (username, password, callback) {
 
-            /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
-            $timeout(function () {
-                var response = { success: username === 'test' && password === 'test' };
-                if (!response.success) {
-                    response.message = 'Username or password is incorrect';
+            db.login(username, password, function(err, response) {
+              var result = {};
+              if (err) {
+                if (err.name === 'unauthorized') {
+                  result.message = 'Введите правильное имя пользователя и/или пароль';
+                } else {
+                  result.message = 'Возникла непредвиденная ошибка';
                 }
-                callback(response);
-            }, 1000);
-
-
-            /* Use this for real authentication
-             ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
-
+              } else {
+                result.success = true;
+              }
+              callback(result);
+            });
         };
 
         service.SetCredentials = function (username, password) {

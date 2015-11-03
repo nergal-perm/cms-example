@@ -40,9 +40,9 @@ angular.module('Chart')
         
         // Задаем параметры диаграммы в целом
         $scope.chartData = {
-          type: 'bar',
-          stacked: 'true',
-          stackType: '100%',
+          type: 'funnel',
+          //stacked: 'true',
+          //stackType: '100%',
           title: {text: title},
           series: series,
           legend: {
@@ -123,7 +123,16 @@ angular.module('Chart')
             legendText: 'Сделка',
             values: lookup['Сделка']
           });
-        }         
+        }
+        if (seriesMap.indexOf("Резерв") !== -1) {
+          series.push({
+            tooltip: {
+              text: '%t: %v (%npv%)'
+            },
+            legendText: 'Резерв',
+            values: lookup['Резерв']
+          });
+        }                   
         // В итоге есть объект со свойствами == массивам статусов
         // Пушим их в массив series и передаем в настройки графика
         

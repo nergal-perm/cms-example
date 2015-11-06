@@ -3,16 +3,16 @@
 angular.module('Test')
 
 .controller('TestCtrl', [
-	'$scope', '$http', 'appSettings', 'AuthenticationService',	
-	function($scope, $http, appSettings, Auth) {
+	'$scope', '$http', 'appSettings', 'AuthenticationService', '$rootScope', '$location',	
+	function($scope, $http, appSettings, Auth, $rootScope, $location) {
 
 	function init() {
-		//Auth.ClearCredentials();
+		$http.defaults.headers.common.Authorization = 'Basic ';		
 	};
 
 	function createCouchDb() {
 		$http.put(appSettings.db, '', {
-			withCredentials: true
+			withCredentials: false
 		})
 			.success(function(response) {
 				$http.get('test/designClients.json').success(function(response) {
@@ -39,6 +39,7 @@ angular.module('Test')
 	function deleteCouchDb() {
 		$http.delete(appSettings.db)
 			.success(function(response) {
+				clearPouchDb();
 				console.log(response);
 			})
 			.error(function(err) {

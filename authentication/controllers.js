@@ -3,8 +3,8 @@
 angular.module('Authentication')
 
 .controller('LoginController',
-    ['$scope', '$rootScope', '$location', 'AuthenticationService', 'appSettings',
-    function ($scope, $rootScope, $location, AuthenticationService, appSettings) {
+    ['$scope', '$rootScope', '$location', 'AuthenticationService', 'appSettings', '$http',
+    function ($scope, $rootScope, $location, AuthenticationService, appSettings, $http) {
         // reset login status
         AuthenticationService.ClearCredentials();
 
@@ -21,4 +21,16 @@ angular.module('Authentication')
                 }
             });
         };
+        
+        $scope.createAdmin = function() {
+          $http.put(appSettings.db, '', {
+            withCredentials: true
+          });
+          $http.get('test/users.json').success(function(response) {
+            response.docs.forEach(function(element, index) {
+              $http.post(appSettings.usersDb, element);  
+            });
+          });
+        };
+       
     }]);

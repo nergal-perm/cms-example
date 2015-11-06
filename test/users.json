@@ -4,25 +4,29 @@
 			"_id": "org.couchdb.user:admin",
 			"name": "admin",
 			"password": "admin",
-			"roles": ["admin"]
+			"roles": ["admin"],
+			"type": "user"
 		},
 		{ 
 			"_id": "org.couchdb.user:salesman1",
 			"name": "salesman1",
 			"password": "salesman1",
-			"roles": ["salesman"]
+			"roles": ["salesman"],
+			"type": "user"
 		},
 		{ 
 			"_id": "org.couchdb.user:salesman2",
 			"name": "salesman2",
 			"password": "salesman2",
-			"roles": ["salesman"]
+			"roles": ["salesman"],
+			"type": "user"
 		},
 		{ 
 			"_id": "org.couchdb.user:manager1",
 			"name": "manager1",
 			"password": "manager1",
-			"roles": ["manager"]
+			"roles": ["manager"],
+			"type": "user"
 		}
 	]
 }

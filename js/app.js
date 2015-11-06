@@ -68,6 +68,9 @@ angular.module('cmsAngular', [
     }
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        if (current.indexOf('test') !== -1) {
+          $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+        }
         // redirect to login page if not logged in and trying to access a restricted page
         var restrictedPage = $.inArray($location.path(), ['/login', '/logout', '/test', '/welcome']) === -1;
         var loggedIn = $rootScope.globals.currentUser;

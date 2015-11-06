@@ -1,0 +1,28 @@
+{
+	"docs": [
+		{
+			"_id": "org.couchdb.user:admin",
+			"name": "admin",
+			"password": "admin",
+			"roles": ["admin"]
+		},
+		{ 
+			"_id": "org.couchdb.user:salesman1",
+			"name": "salesman1",
+			"password": "salesman1",
+			"roles": ["salesman"]
+		},
+		{ 
+			"_id": "org.couchdb.user:salesman2",
+			"name": "salesman2",
+			"password": "salesman2",
+			"roles": ["salesman"]
+		},
+		{ 
+			"_id": "org.couchdb.user:manager1",
+			"name": "manager1",
+			"password": "manager1",
+			"roles": ["manager"]
+		}
+	]
+}

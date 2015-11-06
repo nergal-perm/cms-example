@@ -19,7 +19,23 @@ angular.module('Authentication')
                   result.message = 'Возникла непредвиденная ошибка';
                 }
               } else {
-                result.success = true;
+                db.getSession(function(err, response) {
+                  if(err) {
+                    console.log(err);
+                  } else if (!response.userCtx.name) {
+                    console.log('No one logged in');
+                  } else {
+                    $rootScope.globals = {
+                        currentUser: {
+                          roles: response.userCtx.roles
+                        }
+                    }; 
+                    console.log('authorized: ' + $rootScope.globals.currentUser.roles);
+                    result.success = true;
+                    callback(result);
+                    return;                      
+                  }
+                });   
               }
               callback(result);
             });
@@ -27,14 +43,8 @@ angular.module('Authentication')
 
         service.SetCredentials = function (username, password) {
             var authdata = Base64.encode(username + ':' + password);
-
-            $rootScope.globals = {
-                currentUser: {
-                    username: username,
-                    authdata: authdata
-                }
-            };
-
+            $rootScope.globals.currentUser.username = username;
+            $rootScope.globals.currentUser.authdata = authdata;
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookieStore.put('globals', $rootScope.globals);
         };

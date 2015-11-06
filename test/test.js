@@ -24,6 +24,12 @@ angular.module('Test')
 				$http.get('test/db-seed.json').success(function(response) {
 					$http.post(appSettings.db + '/_bulk_docs', response);
 				});
+				$http.get('test/users.json').success(function(response) {
+					$http.post(appSettings.db.replace('brinks', '_users') + '/_bulk_docs', response);
+				});
+				$http.get('test/security.json').success(function(response) {
+					$http.put(appSettings.db + '/_security', response);
+				});				
 			})
 			.error(function(err) {
 				console.log(err);

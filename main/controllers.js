@@ -3,8 +3,8 @@
 angular.module('DataEntry')
 
 .controller('CmsCtrl', 
-	['$scope', '$uibModal', 'DataService', 'Translit', 
-	function CmsCtrl($scope, $uibModal, DataService, Translit) {
+	['$scope', '$uibModal', 'DataService', 'Translit', '$rootScope',
+	function CmsCtrl($scope, $uibModal, DataService, Translit, $rootScope) {
 		var lookup={};
 		var records = [];
 		
@@ -22,7 +22,13 @@ angular.module('DataEntry')
 			console.log('updating view');
 			records.length = 0;
 			$scope.records.length = 0;	
-			DataService.getAllActiveRecords().then(function(response) {
+			var specificQuery;
+			if ($rootScope.globals.currentUser.roles.indexOf("manager") !== -1) {
+				specificQuery = DataService.getAllActiveRecords;
+			} else {
+				specificQuery = DataService.getActiveRecordsForUser;
+			}
+			specificQuery($rootScope.globals.currentUser.username).then(function(response) {
 				response.rows.forEach(function(element) {
 					records.push(element.doc);
 					lookup[element.doc._id] = element.doc;
@@ -77,8 +83,8 @@ angular.module('DataEntry')
 }])
 
 .controller('ModalCtrl', 
-	['$scope', '$modalInstance', 'itemFromView', 
-	function ModalCtrl($scope, $modalInstance, itemFromView) {
+	['$scope', '$modalInstance', 'itemFromView', '$rootScope', 
+	function ModalCtrl($scope, $modalInstance, itemFromView, $rootScope) {
 	 
 	 if (itemFromView) {
 		var itemToEdit = itemFromView;
@@ -106,10 +112,12 @@ angular.module('DataEntry')
 		$scope.item.statusName = itemToEdit.statusName;
 		$scope.item.nextAction = itemToEdit.nextAction;
 		$scope.item.actions = itemToEdit.actions;
+		$scope.item.user = itemToEdit.user;
 	 } else {
 		$scope.item = {};
 		$scope.item.actions = [];
 		$scope.item.segmentServices = [];
+		$scope.item.user = $rootScope.globals.currentUser.username;
 	 }
 
 	 $scope.atmServices = ["atm-AMS", "atm-Инкассация"];

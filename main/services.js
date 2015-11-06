@@ -22,9 +22,15 @@ angular.module('DataEntry')
 		db.sync(remoteCouch, opts);
 	}
 	
+	function removeListeners() {
+		db.changes().cancel();
+		db.sync().cancel();
+	}
+	
 	service.sync = sync;
 	service.watchChanges = watchChanges;
 	service.dbAddress = remoteCouch;
+	service.unplug = removeListeners;
 
 	service.addRecord = function(record) {
 		if (record._rev) {
@@ -46,6 +52,21 @@ angular.module('DataEntry')
 		});
 	};
 	
+	service.getActiveRecordsForUser = function(username) {
+		return $q(function(resolve, reject) {
+				db.query(appSettings.activeByUserQuery, {include_docs: true, descending: true, key: username}, 
+				function(err, doc) {
+					if(err) {
+						reject(err);
+					} else {
+						console.log('Selected docs for ' + username);
+						resolve(doc);
+					}
+				});
+		});		
+	};
+	
+	
 	service.getAllActiveRecords = function() {
 		return $q(function(resolve, reject) {
 				db.query(appSettings.activeRecordsQuery, {include_docs: true, descending: true}, 
@@ -53,6 +74,7 @@ angular.module('DataEntry')
 					if(err) {
 						reject(err);
 					} else {
+						console.log('Selected all docs');
 						resolve(doc);
 					}
 				});
@@ -77,6 +99,25 @@ angular.module('DataEntry')
 			});
 		});	
 	};
+	
+	service.getCurrentStatusByUser = function(qt, username) {
+		var queryType = {
+			segment: appSettings.currentUserSegmentStatus,
+			funnel: appSettings.currentUserFunnelStatus
+		};
+		console.log(username);
+		return $q(function(resolve, reject) {
+			db.query(queryType[qt], {group: true, startkey: [username], endkey:[username]}, function(err,doc) {
+				if(err) {
+					console.log(err.message);
+					reject(err);
+				} else {
+					console.log(doc);
+					resolve(doc);
+				}
+			});
+		});			
+	}
 	
 	service.getFunnelDynamics = function(year) {
 		var promises = [];

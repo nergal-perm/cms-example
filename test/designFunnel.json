@@ -1,5 +1,5 @@
 {
-	"_id": "-design/funnel",
+	"_id": "_design/funnel",
 	"language": "javascript",
 	"views": {
 		"currentStatus": {

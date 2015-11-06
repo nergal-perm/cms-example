@@ -25,7 +25,8 @@
         "actionDate": "13.10.2015"
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
-      "created": "2015-01-01T03:53:45.379Z"  
+      "created": "2015-01-01T03:53:45.379Z",
+      "user": "salesman1"
     },
     {
       "_id": "client:vtb24:1",
@@ -52,7 +53,8 @@
         "actionDate": "25.10.2015"
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2014" }],
-      "created": "2015-06-28T03:53:45.379Z"
+      "created": "2015-06-28T03:53:45.379Z",
+      "user": "salesman1"
     },
     {
       "_id":"client:bank-primer:1",
@@ -79,7 +81,8 @@
         "actionDate": "13.10.2015"
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
-      "created": "2015-05-28T03:53:45.379Z"      
+      "created": "2015-05-28T03:53:45.379Z",
+      "user": "salesman2"      
     }    
   ]
 }

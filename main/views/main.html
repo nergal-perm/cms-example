@@ -6,8 +6,8 @@
 				<tr>
 					<th>Клиент</th>
 					<th>Сегмент</th>
-					<th>Ожидаемая выручка, руб</th>
-					<th>Ожидаемая прибыль, %</th>
+					<th>Ожидаемая ежемесячная выручка, руб</th>
+					<th>Ожидаемая валовая прибыль, %</th>
 					<th>Расчетная прибыль, руб</th>
 					<th>Статус</th>
 				</tr>
@@ -16,7 +16,7 @@
 					<td>{{details.segmentName}}</td>
 					<td>{{details.segmentRevenue.toLocaleString()}}</td>
 					<td>{{details.segmentProfit}}</td>
-					<td ng-class="{'danger': details.segmentProfit<20, 'success': details.segmentProfit>=20}">{{(details.segmentRevenue * details.segmentProfit / 100).toLocaleString()}}</td>
+					<td ng-class="{'danger': details.segmentProfit<=15, 'warning':details.segmentProfit<=20&&details.segmentProfit>15, 'success': details.segmentProfit>20}">{{(details.segmentRevenue * details.segmentProfit / 100).toLocaleString()}}</td>
 					<td>{{details.statusName}}</td>
 					<td><button class="btn btn-primary" ng-click="open($index)"><span class="glyphicon glyphicon-edit"></span> Изменить</button></td>
 				</tr>

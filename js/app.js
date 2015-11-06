@@ -1,15 +1,15 @@
 ﻿'use strict';
 
 // declare modules
+angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Authentication', ['Config']);
 angular.module('Test', ['Config', 'Authentication']);
-angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Config', []);
 angular.module('Chart', ['DataEntry']);
 
 angular.module('cmsAngular', [
-    'Authentication',
     'DataEntry',
+    'Authentication',
     'Chart',
     'Config',
 		'Test',

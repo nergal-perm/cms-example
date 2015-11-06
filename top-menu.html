@@ -17,7 +17,7 @@
 					<li><a href="/#/charts/status/segment">Текущее состояние</a></li>
 				</ul>
 			</li>
-			<li><a href="/#/test">Администрирование</a></li>
+			<li ng-show="$root.globals.currentUser.roles.indexOf('admin') !== -1"><a href="/#/test">Администрирование</a></li>
 		</ul>
 		<ul class="nav navbar-right top-nav">
 			<li><a href="/#/logout">Выйти</a></li>

@@ -8,6 +8,9 @@
 			 "segmentStatus": {
 				 "map": "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc.segmentName);\n  }\n}",
 				 "reduce": "_count"
-			 }
+			 },
+       "byUser": {
+         "map": "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc.user, doc);\n  }\n}"
+       }
    }
 }

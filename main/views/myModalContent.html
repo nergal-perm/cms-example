@@ -141,33 +141,27 @@
 							<div class="panel-body form-horizontal">
 								<div class="container-fluid">
 									<div class="row">
-										<div class="col-sm-5"><label for="segmentRevenue">Ожидаемая выручка</label></div>
-										<div class="input-group col-sm-7">
+										<div class="col-sm-7"><label for="segmentRevenue">Ожидаемая ежемесячная выручка</label></div>
+										<div class="input-group col-sm-5">
 											<span class="input-group-addon" id="revenue-addon">руб.</span>
 											<input type="number" class="form-control" id="segmentRevenue" placeholder="0,00" ng-model="item.segmentRevenue" aria-describedby="revenue-addon">
 										</div>
 									</div>
 									<br/>
 									<div class="row">
-										<div class="col-sm-5"><label for="segmentProfit">Ожидаемая прибыль</label></div>
-										<div class="input-group col-sm-7">
+										<div class="col-sm-7"><label for="segmentProfit">Ожидаемая валовая прибыль</label></div>
+										<div class="input-group col-sm-5">
 											<span class="input-group-addon" id="profit-addon">%</span>
 											<input type="number" class="form-control" id="segmentProfit" placeholder="0" ng-model="item.segmentProfit" aria-describedby="profit-addon">
 										</div>
 									</div>
 									<br />
-									<div class="row alert alert-danger" role="alert" ng-show="item.segmentProfit<20">
+									<div class="row alert" ng-class="{'alert-danger': item.segmentProfit<=15, 'alert-warning':item.segmentProfit<=20&&item.segmentProfit>15, 'alert-success': item.segmentProfit>20}" role="alert">
 										<label class="col-sm-5 control-label">Расчетная прибыль</label>
 										<div class="col-sm-7">
 											<p class="form-control-static">{{(item.segmentRevenue * item.segmentProfit / 100).toLocaleString()}} руб.</p>
 										</div>										
 									</div>
-									<div class="row alert alert-success" role="alert" ng-show="item.segmentProfit>=20">
-										<label class="col-sm-5 control-label">Расчетная прибыль</label>
-										<div class="col-sm-7">
-											<p class="form-control-static">{{(item.segmentRevenue * item.segmentProfit / 100).toLocaleString()}} руб.</p>
-										</div>										
-									</div>									
 								</div>
 							</div>
 							<!-- .panel-body form-horizontal -->

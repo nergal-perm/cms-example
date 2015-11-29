@@ -54,95 +54,173 @@ angular.module('Chart')
   
 }])
 
-.controller('DynamicsCtrl', 
-  ['$scope', '$http', '$routeParams', 'DataService', 
-  function($scope, $http, $routeParams, DataService) {
+.controller('FunnelCtrl', 
+  ['$scope', '$http', '$routeParams', 'DataService', '$rootScope', 
+  function($scope, $http, $routeParams, DataService, $rootScope) {
     var lookup = {};
     var seriesMap = [];
     var yearB = new Date($routeParams.year, 0,1,0,0,0,0);
     var yearE = new Date($routeParams.year, 11,31,23,59,59,999);
-    
-    DataService.getFunnelDynamics($routeParams.year)
-      .then(function(result) {
-        console.log(JSON.stringify(result));
-        
-        // Перебирая все элементы массивов, находим их пересечение
-        result[0].rows.forEach(function(element) {
-          lookup[element.id] = element;
-        });
-        lookup['total'] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
-        // Для каждого элемента в пересечении делаем следующее:
-        result[1].rows.forEach(function(element) {
-          if (lookup[element.id]) {
-            if (seriesMap.indexOf(element.value) == -1 ) {
-              // 1. Если такого статуса еще нет в словаре статусов, то:
-              // пишем статус в словарь
-              // создаем в объекте lookup массив из 12 нулей
-              seriesMap.push(element.value);
-              lookup[element.value] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
-            } 
-            // 3. Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
-            var monthB = (lookup[element.id].key < yearB) ? 0 : (new Date(lookup[element.id].key).getMonth());
-            var monthE = (element.key == null) ? 11 : (new Date(element.key).getMonth() - 1);
-            
-            if (monthE >= monthB) {
-              // 2. Извлекаем из объекта lookup массив, соответствующий статусу
-              // 4. В статусном массиве увеличиваем на единицу соответствующие элементы
-              for (var index = monthB; index <= monthE; index++){
-                lookup[element.value][index]++;
-                lookup['total'][index]++;
-              }                
-            }            
-          };
-        });
+    var curUser = $rootScope.globals.currentUser.username;
 
+  // Нужно выполнить один запрос к базе данных - получить все данные по воронке продаж за текущий год
+  // Текущий статус мы определим, достав только активные записи
+  // Динамику конкретного продавца мы определим, достав только записи продавца
+  // Текущий статус конкретного продавца мы определим, достав только активные записи продавца
+  
+  // Нужно создать 4 объекта с данными для графиков.
+
+    function initClientsCounterFor(sStatus, user, isActive) {
+      if (seriesMap.indexOf('team_' + sStatus) == -1 ) {
+        seriesMap.push('team_' + sStatus);
+        lookup['team_' +sStatus] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+      };       
+      if (seriesMap.indexOf(user + '_' + sStatus) == -1 ) {
+        seriesMap.push(user + '_' + sStatus);
+        lookup[user + '_' + sStatus] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+      };
+      if (isActive) {
+        if(seriesMap.indexOf(user + '_' + sStatus + '_active') == -1 ) {
+          seriesMap.push(user + '_' + sStatus + '_active');
+          lookup[user + '_' + sStatus + '_active'] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+        }
+        if(seriesMap.indexOf('team_' + sStatus + '_active') == -1) {
+          seriesMap.push('team_' + sStatus + '_active');
+          lookup['team_' + sStatus + '_active'] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+        }
+      };
+          
+    };
+    
+    function getSeriesFor(subject, isActive) {
+        var postfix = isActive !=undefined ? '_active' : '';
         var series = [];
-        if (seriesMap.indexOf("Интерес") !== -1) {
+        if (seriesMap.indexOf(subject + '_' + "Интерес" + postfix) !== -1) {
           series.push({
             tooltip: {
               text: '%t: %v (%npv%)'
             },
             legendText: 'Интерес',
-            values: lookup['Интерес']
+            values: lookup[subject + '_' + 'Интерес' + postfix]
           });
         }
-        if (seriesMap.indexOf("Убеждение") !== -1) {
+        if (seriesMap.indexOf(subject + '_' + "Убеждение" + postfix) !== -1) {
           series.push({
             tooltip: {
               text: '%t: %v (%npv%)'
             },
             legendText: 'Убеждение',
-            values: lookup['Убеждение']
+            values: lookup[subject + '_' + 'Убеждение' + postfix]
           });
         }        
-        if (seriesMap.indexOf("Сделка") !== -1) {
+        if (seriesMap.indexOf(subject + '_' + "Сделка" + postfix) !== -1) {
           series.push({
             tooltip: {
               text: '%t: %v (%npv%)'
             },
             legendText: 'Сделка',
-            values: lookup['Сделка']
+            values: lookup[subject + '_' + 'Сделка' + postfix]
           });
         }
-        if (seriesMap.indexOf("Резерв") !== -1) {
+        if (seriesMap.indexOf(subject + '_' + "Резерв" + postfix) !== -1) {
           series.push({
             tooltip: {
               text: '%t: %v (%npv%)'
             },
             legendText: 'Резерв',
-            values: lookup['Резерв']
+            values: lookup[subject + '_' + 'Резерв' + postfix]
           });
-        }                   
-        // В итоге есть объект со свойствами == массивам статусов
-        // Пушим их в массив series и передаем в настройки графика
-        
+        }               
+        return series;      
+    };
+  
+      
+    DataService.getFunnelDynamics($routeParams.year)
+      .then(function(result) {
+        // Используем вспомогательный объект - сохраняем в него все записи из первого запроса
+        result[0].rows.forEach(function(element) {
+          lookup[element.id] = element;
+        });
+
+        // Если запись из второго запроса найдена во вспомогательном объекте - ее надо отобразить
+        // на графиках
+        result[1].rows.forEach(function(element) {
+          if (lookup[element.id]) {
+            var _status = element.value[0];
+            var _user = element.value[1];
+            var _isActive = element.value[2];
+            // При необходимости инициализируем общий счетчик клиентов с этим статусом и счетчик конкретного продавца
+            initClientsCounterFor(_status, _user, _isActive);
+      
+            // 3. Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
+            var monthB = (lookup[element.id].key < yearB) 
+              ? 0 
+              : (new Date(lookup[element.id].key).getMonth());
+            var monthE = (element.key == null) 
+              ? 11 
+              : (new Date(element.key).getMonth() - 1);
+            
+            if (monthE >= monthB) {
+              // 2. Извлекаем из объекта lookup массив, соответствующий статусу
+              // 4. В статусном массиве увеличиваем на единицу соответствующие элементы
+              for (var index = monthB; index <= monthE; index++){
+                lookup['team' + '_' + _status][index]++;
+                lookup[_user + '_' + _status][index]++;
+                if (_isActive) {
+                  lookup[_user + '_' + _status + '_' + 'active'][index]++;
+                  lookup['team' + '_' + _status + '_' + 'active'][index]++;
+                };
+              }                
+            }            
+          };
+        });
+        // Теперь заполняем конкретные объекты, "лежащие" под графиками
+        // Их должно быть четыре:
+        // 1. Team Funnel Status
+        // 2. Team Funnel Dynamics
+        // 3. Salesman Funnel Status
+        // 4. Salesman Funnel Dynamics
+         
         // Задаем параметры диаграммы в целом
-        $scope.chartData = {
+        $scope.teamDynamicsData = {
           type: 'bar',
           stacked: 'true',
           stackType: '100%',
-          title: {text: 'Динамика воронки продаж'},
-          series: series,
+          title: {text: 'Динамика'},
+          series: getSeriesFor('team'),
+          legend: {
+            visible: true
+          }
+        };        
+        
+        $scope.userDynamicsData = {
+          type: 'bar',
+          stacked: 'true',
+          stackType: '100%',
+          title: {text: 'Динамика по ' + curUser},
+          series: getSeriesFor(curUser),
+          legend: {
+            visible: true
+          }
+        };
+        
+        $scope.userStatusData = {
+          type: 'bar',
+          stacked: 'true',
+          stackType: '100%',
+          title: {text: 'Статус по ' + curUser},
+          series: getSeriesFor(curUser, true),
+          legend: {
+            visible: true
+          }
+        };        
+        
+        $scope.teamStatusData = {
+          type: 'bar',
+          stacked: 'true',
+          stackType: '100%',
+          title: {text: 'Cтатус'},
+          series: getSeriesFor('team', true),
           legend: {
             visible: true
           }

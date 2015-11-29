@@ -1,8 +1,23 @@
 <div ng-include="'top-menu.html'"></div>
 <div class="container">
 	<br />
-	<div class="row">
-		<p>{{$scope.sampleData}}</p>
-		<div zingchart id="myChart" zc-json="chartData" zc-height=500 zc-width=600></div>
+	<div class="row chart-row">
+		<div class="col-sm-4">
+			<p class="small">{{userStatusData}}
+		</div>
+		<div class="col-sm-8">
+			<p class="small">{{userDynamicsData}}</p>
+		</div>
+		<!--
+			<div zingchart id="myChart" zc-json="chartData" zc-height="100%"></div>
+		-->
+	</div>
+	<div class="row chart-row">
+		<div class="col-sm-4">
+			<p class="small">{{teamStatusData}}<p>
+		</div>
+		<div class="col-sm-8">
+			<p class="small">{{teamDynamicsData}}<p>
+		</div>		
 	</div>
 </div>

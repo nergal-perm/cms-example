@@ -83,6 +83,29 @@
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
       "created": "2015-05-28T03:53:45.379Z",
       "user": "salesman2"      
-    }    
+    },
+    {
+      "_id":"client:bank-test:1",
+      "clientName": "Банк Тест 1",
+      "statusName": "Интерес",
+      "created": "2014-01-01T01:01:59.123Z",
+      "cancelled": "2015-03-31T01:01:59.123Z",
+      "user": "salesman1"
+    },
+    {
+      "_id":"client:bank-test:2",
+      "clientName": "Банк Тест 1",
+      "statusName": "Убеждение",
+      "created": "2015-03-31T01:01:59.123Z",
+      "cancelled": "2015-08-31T01:01:59.123Z",
+      "user": "salesman1"
+    },
+    {
+      "_id":"client:bank-test:3",
+      "clientName": "Банк Тест 1",
+      "statusName": "Сделка",
+      "created": "2015-08-31T01:01:59.123Z",
+      "user": "salesman1"
+    }                        
   ]
 }

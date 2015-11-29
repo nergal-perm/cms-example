@@ -7,10 +7,10 @@
       "reduce": "_count"
 		},
 		"byCreatedDate": {
-			"map": "function(doc) {\n  emit(doc.created, doc.statusName);\n}"
+			"map": "function(doc) {\n  emit(doc.created, [doc.statusName, doc.user, doc.cancelled==null]);\n}"
 		},
 		"byCancelledDate": {
-			"map": "function(doc) {\n  emit(doc.cancelled, doc.statusName);\n}"
+			"map": "function(doc) {\n  emit(doc.cancelled, [doc.statusName, doc.user, doc.cancelled==null]);\n}"
 		}
 	}
 }

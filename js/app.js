@@ -46,13 +46,13 @@ angular.module('cmsAngular', [
 					templateUrl: 'test/views/test.html'
 				})
         
-        .when('/charts/status/:chartType', {
-          controller: 'StatusCtrl',
+        .when('/charts/funnel/:year', {
+          controller: 'FunnelCtrl',
           templateUrl: 'chart/views/chart.html'
         })
 
-        .when('/charts/dynamics/:chartType/:year', {
-          controller: 'DynamicsCtrl',
+        .when('/charts/segment', {
+          controller: 'SegmentCtrl',
           templateUrl: 'chart/views/chart.html'
         })
 

@@ -82,11 +82,11 @@ angular.module('Chart')
       if (isActive) {
         if(seriesMap.indexOf(user + '_' + sStatus + '_active') == -1 ) {
           seriesMap.push(user + '_' + sStatus + '_active');
-          lookup[user + '_' + sStatus + '_active'] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+          lookup[user + '_' + sStatus + '_active'] = 0;
         }
         if(seriesMap.indexOf('team_' + sStatus + '_active') == -1) {
           seriesMap.push('team_' + sStatus + '_active');
-          lookup['team_' + sStatus + '_active'] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+          lookup['team_' + sStatus + '_active'] = 0;
         }
       };
           

@@ -3,21 +3,19 @@
 	<br />
 	<div class="row">
 		<div class="col-sm-4" > 
-			<div class="chart-row" zingchart id="myChart" zc-json="userStatusJson" zc-values="userStatusData" zc-height="100%" zc-width="100%"></div>
+			<div class="chart-row" zingchart id="userStatus" zc-json="userStatusJson" zc-height="100%" zc-width="100%"></div>
 		</div>
 		<div class="col-sm-8">
-			<p class="small">{{userDynamicsData}}</p>
+			<div class="chart-row" zingchart id="userDynamics" zc-json="userDynamicsJson" zc-height="100%" zc-width="100%"></div>
 		</div>
-		<!--
-			
-		-->
 	</div>
+	<br />
 	<div class="row chart-row">
 		<div class="col-sm-4">
-			<p class="small">{{teamStatusData}}<p>
+			<div class="chart-row" zingchart id="teamStatus" zc-json="teamStatusJson" zc-height="100%" zc-width="100%"></div>
 		</div>
 		<div class="col-sm-8">
-			<p class="small">{{teamDynamicsData}}<p>
+			<div class="chart-row" zingchart id="teamDynamics" zc-json="teamDynamicsJson" zc-height="100%" zc-width="100%"></div>
 		</div>		
 	</div>
 </div>

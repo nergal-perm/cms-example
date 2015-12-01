@@ -63,6 +63,9 @@ angular.module('Chart')
     var yearE = new Date($routeParams.year, 11,31,23,59,59,999);
     var curUser = $rootScope.globals.currentUser.username;
 
+
+    $scope.reportLocation = true;
+    setUpCharts();
   // Нужно выполнить один запрос к базе данных - получить все данные по воронке продаж за текущий год
   // Текущий статус мы определим, достав только активные записи
   // Динамику конкретного продавца мы определим, достав только записи продавца
@@ -82,11 +85,11 @@ angular.module('Chart')
       if (isActive) {
         if(seriesMap.indexOf(user + '_' + sStatus + '_active') == -1 ) {
           seriesMap.push(user + '_' + sStatus + '_active');
-          lookup[user + '_' + sStatus + '_active'] = 0;
+          lookup[user + '_' + sStatus + '_active'] = [0];
         }
         if(seriesMap.indexOf('team_' + sStatus + '_active') == -1) {
           seriesMap.push('team_' + sStatus + '_active');
-          lookup['team_' + sStatus + '_active'] = 0;
+          lookup['team_' + sStatus + '_active'] = [0];
         }
       };
           
@@ -142,6 +145,7 @@ angular.module('Chart')
           lookup[element.id] = element;
         });
 
+        var users = [];
         // Если запись из второго запроса найдена во вспомогательном объекте - ее надо отобразить
         // на графиках
         result[1].rows.forEach(function(element) {
@@ -151,6 +155,10 @@ angular.module('Chart')
             var _isActive = element.value[2];
             // При необходимости инициализируем общий счетчик клиентов с этим статусом и счетчик конкретного продавца
             initClientsCounterFor(_status, _user, _isActive);
+            
+            if(users.indexOf(_user) === -1) {
+              users.push(_user);
+            }
       
             // 3. Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
             var monthB = (lookup[element.id].key < yearB) 
@@ -166,11 +174,11 @@ angular.module('Chart')
               for (var index = monthB; index <= monthE; index++){
                 lookup['team' + '_' + _status][index]++;
                 lookup[_user + '_' + _status][index]++;
-                if (_isActive) {
-                  lookup[_user + '_' + _status + '_' + 'active'][index]++;
-                  lookup['team' + '_' + _status + '_' + 'active'][index]++;
-                };
-              }                
+              }
+              if (_isActive) {
+                lookup[_user + '_' + _status + '_' + 'active'][0]++;
+                lookup['team' + '_' + _status + '_' + 'active'][0]++;
+              };                
             }            
           };
         });
@@ -182,50 +190,72 @@ angular.module('Chart')
         // 4. Salesman Funnel Dynamics
          
         // Задаем параметры диаграммы в целом
-        $scope.teamDynamicsData = {
+        setDiagramValuesFor(curUser);
+
+        users.sort();
+        $scope.users=users;
+        console.log($scope.users);
+      });
+      
+    function setDiagramValuesFor(curUser) {
+        $scope.teamDynamicsData = getSeriesFor('team');
+        $scope.teamStatusData = getSeriesFor('team', true);
+        $scope.userDynamicsData = getSeriesFor(curUser);
+        $scope.userDynamicsJson.title.text = 'Динамика по ' + curUser;
+        $scope.userStatusData = getSeriesFor(curUser, true);
+        $scope.userStatusJson.title.text = 'Статус по ' + curUser;
+    };
+    
+    function setUpCharts() {
+        $scope.teamDynamicsJson = {
           type: 'bar',
           stacked: 'true',
           stackType: '100%',
           title: {text: 'Динамика'},
-          series: getSeriesFor('team'),
+          series: $scope.teamDynamicsData,
           legend: {
             visible: true
           }
         };        
         
-        $scope.userDynamicsData = {
+        $scope.userDynamicsJson = {
           type: 'bar',
           stacked: 'true',
           stackType: '100%',
           title: {text: 'Динамика по ' + curUser},
-          series: getSeriesFor(curUser),
+          series: $scope.userDynamicsData,
           legend: {
             visible: true
           }
         };
         
-        $scope.userStatusData = {
+        $scope.userStatusJson = {
           type: 'bar',
           stacked: 'true',
           stackType: '100%',
           title: {text: 'Статус по ' + curUser},
-          series: getSeriesFor(curUser, true),
+          series: $scope.userStatusData,
           legend: {
             visible: true
           }
         };        
         
-        $scope.teamStatusData = {
+        $scope.teamStatusJson = {
           type: 'bar',
           stacked: 'true',
           stackType: '100%',
           title: {text: 'Cтатус'},
-          series: getSeriesFor('team', true),
+          series: $scope.teamStatusData,
           legend: {
             visible: true
           }
-        };        
-      });
+        };       
+    }      
+        
+    $scope.setSalesman = function($event, user) {
+      console.log(user);
+      setDiagramValuesFor(user);
+    };
   }
  
 ]);

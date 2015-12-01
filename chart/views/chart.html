@@ -1,15 +1,15 @@
 <div ng-include="'top-menu.html'"></div>
 <div class="container">
 	<br />
-	<div class="row chart-row">
-		<div class="col-sm-4">
-			<p class="small">{{userStatusData}}
+	<div class="row">
+		<div class="col-sm-4" > 
+			<div class="chart-row" zingchart id="myChart" zc-json="userStatusJson" zc-values="userStatusData" zc-height="100%" zc-width="100%"></div>
 		</div>
 		<div class="col-sm-8">
 			<p class="small">{{userDynamicsData}}</p>
 		</div>
 		<!--
-			<div zingchart id="myChart" zc-json="chartData" zc-height="100%"></div>
+			
 		-->
 	</div>
 	<div class="row chart-row">

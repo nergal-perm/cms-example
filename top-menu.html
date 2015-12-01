@@ -17,11 +17,10 @@
 					<li><a href="/#/charts/status/segment">Текущее состояние</a></li>
 				</ul>
 			</li>
-			<li ng-show="$root.globals.currentUser.roles.indexOf('manager') !== -1">
+			<li ng-show="$root.globals.currentUser.roles.indexOf('manager') !== -1 && reportLocation">
 				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Продавцы<span class="caret"></span></a>
 					<ul class="dropdown-menu">
-            			<li><a href="">salesman1</a></li>
-            			<li><a href="">salesman2</a></li>
+							<li ng-click="setSalesman($event, user)" ng-repeat="user in users"><a href="">{{user}}</a></li>
 					</ul>
 			</li>
 			<li ng-show="$root.globals.currentUser.roles.indexOf('admin') !== -1"><a href="/#/test">Администрирование</a></li>

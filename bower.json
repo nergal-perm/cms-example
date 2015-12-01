@@ -28,6 +28,7 @@
     "jquery": "~2.1.4",
     "pouchdb": "~5.0.0",
     "pouchdb-authentication": "~0.4.2",
+    "zingchart": "~2.2.1",
     "ZingChart-AngularJS": "zingchart-angularjs#~1.0.6"
   },
   "resolutions": {

@@ -3,14 +3,14 @@
 	"language": "javascript",
 	"views": {
 		"currentStatus": {
-			"map": "function(doc) {\n  if(!doc.cancelled) {\n    emit(doc.statusName);\n  }\n}",
+			"map": "function(doc) {\n  if(doc.cancelled === '2099-12-31T23:59:59.999Z') {\n    emit(doc.statusName);\n  }\n}",
       "reduce": "_count"
 		},
 		"byCreatedDate": {
-			"map": "function(doc) {\n  emit(doc.created, [doc.statusName, doc.user, doc.cancelled==null]);\n}"
+			"map": "function(doc) {\n  emit(doc.created, [doc.statusName, doc.user, doc.cancelled === '2099-12-31T23:59:59.999Z']);\n}"
 		},
 		"byCancelledDate": {
-			"map": "function(doc) {\n  emit(doc.cancelled, [doc.statusName, doc.user, doc.cancelled==null]);\n}"
+			"map": "function(doc) {\n  emit(doc.cancelled, [doc.statusName, doc.user, doc.cancelled === '2099-12-31T23:59:59.999Z']);\n}"
 		}
 	}
 }

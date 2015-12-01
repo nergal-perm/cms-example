@@ -142,12 +142,14 @@ angular.module('Chart')
       .then(function(result) {
         // Используем вспомогательный объект - сохраняем в него все записи из первого запроса
         result[0].rows.forEach(function(element) {
-          lookup[element.id] = element;
+          if (element.key >= yearB.toISOString()) {
+            lookup[element.id] = element;
+            console.log(element);
+          }
         });
 
         var users = [];
-        // Если запись из второго запроса найдена во вспомогательном объекте - ее надо отобразить
-        // на графиках
+
         result[1].rows.forEach(function(element) {
           if (lookup[element.id]) {
             var _status = element.value[0];
@@ -164,7 +166,7 @@ angular.module('Chart')
             var monthB = (lookup[element.id].key < yearB) 
               ? 0 
               : (new Date(lookup[element.id].key).getMonth());
-            var monthE = (element.key == null) 
+            var monthE = (element.key > yearE) 
               ? 11 
               : (new Date(element.key).getMonth() - 1);
             
@@ -188,14 +190,17 @@ angular.module('Chart')
         // 2. Team Funnel Dynamics
         // 3. Salesman Funnel Status
         // 4. Salesman Funnel Dynamics
-         
+        
+        console.log(JSON.stringify(lookup));
+        
         users.sort();
         $scope.users=users;
         console.log($scope.users);
         // Задаем параметры диаграммы в целом
         setUpCharts(curUser);
        
-      });
+      } // getFunnelDynamics().then()
+    );
       
     function setUpCharts(user) {
         $scope.teamDynamicsJson = {

@@ -26,6 +26,7 @@
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
       "created": "2015-01-01T03:53:45.379Z",
+      "cancelled": "2099-12-31T23:59:59.999Z",
       "user": "salesman1"
     },
     {
@@ -54,6 +55,7 @@
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2014" }],
       "created": "2015-06-28T03:53:45.379Z",
+      "cancelled": "2099-12-31T23:59:59.999Z",
       "user": "salesman1"
     },
     {
@@ -82,6 +84,7 @@
       },
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
       "created": "2015-05-28T03:53:45.379Z",
+      "cancelled": "2099-12-31T23:59:59.999Z",
       "user": "salesman2"      
     },
     {
@@ -105,6 +108,7 @@
       "clientName": "Банк Тест 1",
       "statusName": "Сделка",
       "created": "2015-08-31T01:01:59.123Z",
+      "cancelled": "2099-12-31T23:59:59.999Z",
       "user": "salesman1"
     }                        
   ]

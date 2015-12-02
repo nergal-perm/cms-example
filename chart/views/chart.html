@@ -4,17 +4,33 @@
 	<div class="row">
 		<div class="col-sm-4" > 
 			<div class="chart-row" zingchart id="userStatus" zc-json="userStatusJson" zc-height="100%" zc-width="100%"></div>
+			<!--
+			<h3>{{userStatusJson.title.text}}</h1>
+			<p ng-repeat="value in userStatusJson.series">{{value.legendText}}: {{value.values}}</p>
+			-->
 		</div>
 		<div class="col-sm-8">
+			<!--
+			<h3>{{userDynamicsJson.title.text}}</h1>
+			<p ng-repeat="value in userDynamicsJson.series">{{value.legendText}}: {{value.values}}</p>
+			-->
 			<div class="chart-row" zingchart id="userDynamics" zc-json="userDynamicsJson" zc-height="100%" zc-width="100%"></div>
 		</div>
 	</div>
 	<br />
 	<div class="row chart-row">
 		<div class="col-sm-4">
+			<!--
+			<h3>{{teamStatusJson.title.text}}</h1>
+			<p ng-repeat="value in teamStatusJson.series">{{value.legendText}}: {{value.values}}</p>
+			-->
 			<div class="chart-row" zingchart id="teamStatus" zc-json="teamStatusJson" zc-height="100%" zc-width="100%"></div>
 		</div>
 		<div class="col-sm-8">
+			<!--
+			<h3>{{teamDynamicsJson.title.text}}</h1>
+			<p ng-repeat="value in teamDynamicsJson.series">{{value.legendText}}: {{value.values}}</p>
+			-->
 			<div class="chart-row" zingchart id="teamDynamics" zc-json="teamDynamicsJson" zc-height="100%" zc-width="100%"></div>
 		</div>		
 	</div>

@@ -142,16 +142,15 @@ angular.module('Chart')
       .then(function(result) {
         // Используем вспомогательный объект - сохраняем в него все записи из первого запроса
         result[0].rows.forEach(function(element) {
-          if (element.key >= yearB.toISOString()) {
+          if (element.key <= yearE.toISOString()) {
             lookup[element.id] = element;
-            console.log(element);
           }
         });
 
         var users = [];
 
         result[1].rows.forEach(function(element) {
-          if (lookup[element.id]) {
+          if (lookup[element.id] && element.key >= yearB.toISOString()) {
             var _status = element.value[0];
             var _user = element.value[1];
             var _isActive = element.value[2];
@@ -163,14 +162,14 @@ angular.module('Chart')
             }
       
             // 3. Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
-            var monthB = (lookup[element.id].key < yearB) 
+            var monthB = (lookup[element.id].key < yearB.toISOString()) 
               ? 0 
               : (new Date(lookup[element.id].key).getMonth());
-            var monthE = (element.key > yearE) 
+            var monthE = (element.key > yearE.toISOString()) 
               ? 11 
-              : (new Date(element.key).getMonth() - 1);
-            
-            if (monthE >= monthB) {
+              : (new Date(element.key).getMonth());
+            console.log('Created: ' + lookup[element.id].key + ', cancelled: ' + element.key + ', months: ' + monthB + '-' + monthE);
+            if (monthE > monthB) {
               // 2. Извлекаем из объекта lookup массив, соответствующий статусу
               // 4. В статусном массиве увеличиваем на единицу соответствующие элементы
               for (var index = monthB; index <= monthE; index++){

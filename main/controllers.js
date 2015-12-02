@@ -19,7 +19,6 @@ angular.module('DataEntry')
 		init();
 
 		function updateView() {
-			console.log('updating view');
 			records.length = 0;
 			$scope.records.length = 0;	
 			var specificQuery;
@@ -73,6 +72,7 @@ angular.module('DataEntry')
 				};
 			}
 			updatedItem.created = new Date().toISOString();
+			updatedItem.cancelled = "2099-12-31T23:59:59.999Z";
 			recordsToWrite.push(updatedItem);
 			DataService.bulkRecords(recordsToWrite);
 		}, function () {
@@ -127,8 +127,6 @@ angular.module('DataEntry')
 	 $scope.mpServices = ['mp-Ритейл','mp-Банковские офисы','mp-ATM','mp-Терминалы','mp-АДМ'];
 	 $scope.amsServices=['ams-Финансовый менеджмент','ams-"Таинственные исчезновения"','ams-Технический мониторинг','ams-Экспресс FLM','ams-SLM','ams-iSLM','ams-Менеджмент поставщиков услуг','ams-Страхование','ams-Аренда'];
 	 $scope.toggleCheck = function(service) {
-		 console.log('Checkng service: ' + service);
-		 console.log('Its index: ' + $scope.item.segmentServices.indexOf(service));
 		 if ($scope.item.segmentServices.indexOf(service) === -1) {
 			 $scope.item.segmentServices.push(service);
 		 } else {

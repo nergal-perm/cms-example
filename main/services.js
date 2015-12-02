@@ -123,7 +123,6 @@ angular.module('DataEntry')
 		var promises = [];
 		var dtb = new Date(year,0,1,0,0,0,0);
 		var dte = new Date(year,11,31,23,59,59,999);
-		console.log(dtb.toISOString() + "-" + dte.toISOString() );
 		promises.push($q(function(resolve, reject) {
 			db.query(appSettings.funnelStart, {
 				endkey: dte.toISOString()

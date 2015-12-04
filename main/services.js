@@ -105,7 +105,6 @@ angular.module('DataEntry')
 			segment: appSettings.currentUserSegmentStatus,
 			funnel: appSettings.currentUserFunnelStatus
 		};
-		console.log(username);
 		return $q(function(resolve, reject) {
 			db.query(queryType[qt], {group: true, startkey: [username], endkey:[username]}, function(err,doc) {
 				if(err) {
@@ -119,12 +118,15 @@ angular.module('DataEntry')
 		});			
 	}
 	
-	service.getFunnelDynamics = function(year) {
+	service.getDynamics = function(year, type) {
 		var promises = [];
 		var dtb = new Date(year,0,1,0,0,0,0);
 		var dte = new Date(year,11,31,23,59,59,999);
+		var queryStart = appSettings[type + 'Start']; 
+		var queryEnd = appSettings[type + 'End'];
+
 		promises.push($q(function(resolve, reject) {
-			db.query(appSettings.funnelStart, {
+			db.query(queryStart, {
 				endkey: dte.toISOString()
 			}, 
 			function(err,doc) {
@@ -139,7 +141,7 @@ angular.module('DataEntry')
 		}));
 		
 		promises.push($q(function(resolve, reject) {
-			db.query(appSettings.funnelEnd, {
+			db.query(queryEnd, {
 				startKey: dtb.toISOString(),
 				descending: true
 			},  

@@ -7,15 +7,15 @@ angular.module('Config')
 	usersDb: 'http://localhost:5984/_users',
 	activeRecordsQuery: 'clients/active',
 	activeByUserQuery: 'clients/byUser',
-	currentSegmentStatus: 'clients/segmentStatus',
-	currentFunnelStatus: 'funnel/currentStatus',
-	currentUserFunnelStatus: 'funnel/currentStatusByUser',
-	funnelStart: 'funnel/byCreatedDate',
-	funnelEnd: 'funnel/byCancelledDate'	
+	funnelStart: 'charts/funnelCreatedDate',
+	funnelEnd: 'charts/funnelCancelledDate',
+	segmentStart: 'charts/segmentCreatedDate',
+	segmentEnd: 'charts/segmentCancelledDate'	
 })
 
 .constant('chartSettings', { 
-	seriesOrder: ["Интерес", "Убеждение", "Сделка", "Резерв"],
+	funnelSeriesOrder: ["Интерес", "Убеждение", "Сделка", "Резерв"],
+	segmentSeriesOrder: ["Прибыльный НЕЦЕЛЕВОЙ", "Прибыльный ЦЕЛЕВОЙ"],
 	funnelSettings: {
 		type: 'funnel',
 		stacked: 'true',
@@ -37,6 +37,6 @@ angular.module('Config')
 	seriesTemplate: {
 		tooltip: {
 			text: '%t: %v (%npv%)'
-		},
+		}
 	}
 });

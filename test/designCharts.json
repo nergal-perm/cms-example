@@ -1,0 +1,18 @@
+{
+	"_id": "_design/charts",
+	"language": "javascript",
+	"views": {
+		"funnelCreatedDate": {
+			"map": "function(doc) {\n  emit(doc.created, [doc.statusName, doc.user, doc.cancelled === '2099-12-31T23:59:59.999Z']);\n}"
+		},
+		"funnelCancelledDate": {
+			"map": "function(doc) {\n  emit(doc.cancelled, [doc.statusName, doc.user, doc.cancelled === '2099-12-31T23:59:59.999Z']);\n}"
+		},
+		"segmentCreatedDate": {
+			"map": "function(doc) {\n  emit(doc.created, [doc.segmentName, doc.user, doc.cancelled === '2099-12-31T23:59:59.999Z']);\n}"
+		},
+		"segmentCancelledDate": {
+			"map": "function(doc) {\n  emit(doc.cancelled, [doc.segmentName, doc.user, doc.cancelled === '2099-12-31T23:59:59.999Z']);\n}"
+		}		
+	}
+}

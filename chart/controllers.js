@@ -63,17 +63,10 @@ angular.module('Chart')
     var yearE = new Date($routeParams.year, 11,31,23,59,59,999);
     var curUser = $rootScope.globals.currentUser.username;
 
-
-    $scope.reportLocation = true;
-  // Нужно выполнить один запрос к базе данных - получить все данные по воронке продаж за текущий год
-  // Текущий статус мы определим, достав только активные записи
-  // Динамику конкретного продавца мы определим, достав только записи продавца
-  // Текущий статус конкретного продавца мы определим, достав только активные записи продавца
-  
-  // Нужно создать 4 объекта с данными для графиков.
+    DataService.getDynamics($routeParams.year, $routeParams.type).then(processQuery);
 
     function initClientsCounterFor(user) {
-      chartSettings.seriesOrder.forEach(function(element, index, array) {
+      chartSettings[$routeParams.type + 'Series' + 'Order'].forEach(function(element, index, array) {
         var keyDynamics = user + '_' + element; 
         seriesMap.push(keyDynamics);
         lookup[keyDynamics] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
@@ -88,7 +81,7 @@ angular.module('Chart')
     function getSeriesFor(subject, isActive) {
         var postfix = isActive !=undefined ? '_active' : '';
         var series = [];
-        chartSettings.seriesOrder.forEach(function(element, index, array) {
+        chartSettings[$routeParams.type + 'Series' + 'Order'].forEach(function(element, index, array) {
           var template = JSON.parse(JSON.stringify(chartSettings.seriesTemplate));
           template.text = element;
           template.legendText = element;
@@ -99,19 +92,18 @@ angular.module('Chart')
         return series;      
     };
   
-      
-    DataService.getFunnelDynamics($routeParams.year)
-      .then(function(result) {
-        // Используем вспомогательный объект - сохраняем в него все записи из первого запроса
+    function processQuery(result) {
+        initClientsCounterFor('team');
+        var users = [];
+
+        // Используем вспомогательный объект - сохраняем в него все записи из первого запроса,
+        // а в отчете покажем только те из них, что присутствуют и во втором запросе тоже
         result[0].rows.forEach(function(element) {
           if (element.key <= yearE.toISOString()) {
             lookup[element.id] = element;
           }
         });
 
-        initClientsCounterFor('team');
-        var users = [];
-          
         result[1].rows.forEach(function(element) {
           if (lookup[element.id] && element.key >= yearB.toISOString()) {
             var _status = element.value[0];
@@ -126,17 +118,15 @@ angular.module('Chart')
               users.push(_user);
             }
       
-            // 3. Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
+            // Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
             var monthB = (lookup[element.id].key < yearB.toISOString()) 
               ? 0 
               : (new Date(lookup[element.id].key).getMonth());
             var monthE = (element.key > yearE.toISOString()) 
               ? 11 
               : (new Date(element.key).getMonth());
-            console.log('Created: ' + lookup[element.id].key + ', cancelled: ' + element.key + ', months: ' + monthB + '-' + monthE);
+
             if (monthE > monthB) {
-              // 2. Извлекаем из объекта lookup массив, соответствующий статусу
-              // 4. В статусном массиве увеличиваем на единицу соответствующие элементы
               for (var index = monthB; index <= monthE; index++){
                 lookup['team' + '_' + _status][index]++;
                 lookup[_user + '_' + _status][index]++;
@@ -147,15 +137,13 @@ angular.module('Chart')
               };                
             }            
           };
+        
+          users.sort();
+          $scope.users=users;
+  
+          $scope.$apply(setUpCharts(curUser));
         });
-
-        users.sort();
-        $scope.users=users;
-
-        setUpCharts(curUser);
-       
-      } // getFunnelDynamics().then()
-    );
+    };
       
     function setUpCharts(user) {
         $scope.teamDynamicsJson = getChartSettings('bar');

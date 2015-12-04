@@ -5,14 +5,16 @@ angular.module('DataEntry', ['ui.bootstrap', 'Config']);
 angular.module('Authentication', ['Config']);
 angular.module('Test', ['Config', 'Authentication']);
 angular.module('Config', []);
-angular.module('Chart', ['DataEntry']);
+angular.module('Chart', ['DataEntry', 'Config']);
+angular.module('TopMenu', []);
 
 angular.module('cmsAngular', [
     'DataEntry',
     'Authentication',
     'Chart',
     'Config',
-		'Test',
+    'Test',
+    'TopMenu',
     'ngRoute',
     'ngCookies',
     'zingchart-angularjs'

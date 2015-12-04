@@ -55,8 +55,8 @@ angular.module('Chart')
 }])
 
 .controller('FunnelCtrl', 
-  ['$scope', '$http', '$routeParams', 'DataService', '$rootScope', 
-  function($scope, $http, $routeParams, DataService, $rootScope) {
+  ['$scope', '$http', '$routeParams', 'DataService', '$rootScope', 'chartSettings',
+  function($scope, $http, $routeParams, DataService, $rootScope, chartSettings) {
     var lookup = {};
     var seriesMap = [];
     var yearB = new Date($routeParams.year, 0,1,0,0,0,0);
@@ -72,68 +72,30 @@ angular.module('Chart')
   
   // Нужно создать 4 объекта с данными для графиков.
 
-    function initClientsCounterFor(sStatus, user, isActive) {
-      if (seriesMap.indexOf('team_' + sStatus) == -1 ) {
-        seriesMap.push('team_' + sStatus);
-        lookup['team_' +sStatus] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
-      };       
-      if (seriesMap.indexOf(user + '_' + sStatus) == -1 ) {
-        seriesMap.push(user + '_' + sStatus);
-        lookup[user + '_' + sStatus] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
-      };
-      if (isActive) {
-        if(seriesMap.indexOf(user + '_' + sStatus + '_active') == -1 ) {
-          seriesMap.push(user + '_' + sStatus + '_active');
-          lookup[user + '_' + sStatus + '_active'] = [0];
-        }
-        if(seriesMap.indexOf('team_' + sStatus + '_active') == -1) {
-          seriesMap.push('team_' + sStatus + '_active');
-          lookup['team_' + sStatus + '_active'] = [0];
-        }
-      };
-          
+    function initClientsCounterFor(user) {
+      chartSettings.seriesOrder.forEach(function(element, index, array) {
+        var keyDynamics = user + '_' + element; 
+        seriesMap.push(keyDynamics);
+        lookup[keyDynamics] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
+        
+        var keyStatus = user + '_' + element + '_active';
+        seriesMap.push(keyStatus);
+        lookup[keyStatus] = [0];
+      });
+      lookup[user] = true;
     };
     
     function getSeriesFor(subject, isActive) {
         var postfix = isActive !=undefined ? '_active' : '';
         var series = [];
-        if (seriesMap.indexOf(subject + '_' + "Интерес" + postfix) !== -1) {
-          series.push({
-            tooltip: {
-              text: '%t: %v (%npv%)'
-            },
-            legendText: 'Интерес',
-            values: lookup[subject + '_' + 'Интерес' + postfix]
-          });
-        }
-        if (seriesMap.indexOf(subject + '_' + "Убеждение" + postfix) !== -1) {
-          series.push({
-            tooltip: {
-              text: '%t: %v (%npv%)'
-            },
-            text: "Убеждение",
-            legendText: 'Убеждение',
-            values: lookup[subject + '_' + 'Убеждение' + postfix]
-          });
-        }        
-        if (seriesMap.indexOf(subject + '_' + "Сделка" + postfix) !== -1) {
-          series.push({
-            tooltip: {
-              text: '%t: %v (%npv%)'
-            },
-            legendText: 'Сделка',
-            values: lookup[subject + '_' + 'Сделка' + postfix]
-          });
-        }
-        if (seriesMap.indexOf(subject + '_' + "Резерв" + postfix) !== -1) {
-          series.push({
-            tooltip: {
-              text: '%t: %v (%npv%)'
-            },
-            legendText: 'Резерв',
-            values: lookup[subject + '_' + 'Резерв' + postfix]
-          });
-        }               
+        chartSettings.seriesOrder.forEach(function(element, index, array) {
+          var template = JSON.parse(JSON.stringify(chartSettings.seriesTemplate));
+          template.text = element;
+          template.legendText = element;
+          template.values = lookup[subject + '_' + element + postfix];
+          
+          series.push(template);
+        });
         return series;      
     };
   
@@ -147,15 +109,18 @@ angular.module('Chart')
           }
         });
 
+        initClientsCounterFor('team');
         var users = [];
-
+          
         result[1].rows.forEach(function(element) {
           if (lookup[element.id] && element.key >= yearB.toISOString()) {
             var _status = element.value[0];
             var _user = element.value[1];
             var _isActive = element.value[2];
             // При необходимости инициализируем общий счетчик клиентов с этим статусом и счетчик конкретного продавца
-            initClientsCounterFor(_status, _user, _isActive);
+            if (!lookup[_user]) {
+              initClientsCounterFor(_user);
+            }
             
             if(users.indexOf(_user) === -1) {
               users.push(_user);
@@ -183,79 +148,43 @@ angular.module('Chart')
             }            
           };
         });
-        // Теперь заполняем конкретные объекты, "лежащие" под графиками
-        // Их должно быть четыре:
-        // 1. Team Funnel Status
-        // 2. Team Funnel Dynamics
-        // 3. Salesman Funnel Status
-        // 4. Salesman Funnel Dynamics
-        
-        console.log(JSON.stringify(lookup));
-        
+
         users.sort();
         $scope.users=users;
-        console.log($scope.users);
-        // Задаем параметры диаграммы в целом
+
         setUpCharts(curUser);
        
       } // getFunnelDynamics().then()
     );
       
     function setUpCharts(user) {
-        $scope.teamDynamicsJson = {
-          type: 'bar',
-          stacked: 'true',
-          stackType: '100%',
-          title: {text: 'Динамика'},
-          series: getSeriesFor('team'),
-          legend: {
-            draggable: true,
-            visible: true
-          }
-        };        
+        $scope.teamDynamicsJson = getChartSettings('bar');
+        $scope.teamDynamicsJson.title = {text: 'Общая динамика'};
+        $scope.teamDynamicsJson.series = getSeriesFor('team');
+      
+        $scope.userDynamicsJson = getChartSettings('bar');
+        $scope.userDynamicsJson.title = {text: 'Динамика по ' + user};
+        $scope.userDynamicsJson.series = getSeriesFor(user);
         
-        $scope.userDynamicsJson = {
-          type: 'bar',
-          stacked: 'true',
-          stackType: '100%',
-          title: {text: 'Динамика по ' + user},
-          series: getSeriesFor(user),
-          legend: {
-            draggable: true,            
-            visible: true,
-            
-          }
-        };
+        $scope.userStatusJson = getChartSettings('funnel');
+        $scope.userStatusJson.title = {text: 'Статус по ' + user};
+        $scope.userStatusJson.series = getSeriesFor(user, true);        
         
-        $scope.userStatusJson = {
-          type: 'funnel',
-          stacked: 'true',
-          //stackType: '100%',
-          title: {text: 'Статус по ' + user},
-          series: getSeriesFor(user, true),
-          legend: {
-            align: "right",
-            verticalAlign: "bottom",
-            draggable: true,            
-            visible: true
-          }
-        };        
-        
-        $scope.teamStatusJson = {
-          type: 'bar',
-          stacked: 'true',
-          stackType: '100%',
-          title: {text: 'Cтатус'},
-          series: getSeriesFor('team', true),
-          legend: {
-            draggable: true,            
-            visible: true
-          }
-        };       
-    }      
+        $scope.teamStatusJson = getChartSettings('funnel');
+        $scope.teamStatusJson.title = {text: 'Общий статус'};
+        $scope.teamStatusJson.series = getSeriesFor('team', true);
+    };      
+    
+    function getChartSettings(chartType, user) {
+      if (chartType === 'funnel') {
+        return JSON.parse(JSON.stringify(chartSettings.funnelSettings));
+      }
+      if (chartType === 'bar') {
+        return JSON.parse(JSON.stringify(chartSettings.barSettings));
+      }
+    }
         
     $scope.setSalesman = function($event, user) {
-      console.log(user);
       setUpCharts(user);
     };
   }

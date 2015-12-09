@@ -8,6 +8,11 @@ angular.module('Chart')
     var yearB;
     var yearE;
     var curUser = $rootScope.globals.currentUser.username;
+
+		$scope.salesmenInputPlaceholder = 'Данные не загружены...';
+		$scope.salesmenInputDisabled = true;
+		$scope.reportUser = '0';
+		$scope.setUpCharts = setUpCharts;
     
     function initialize() {
       yearB = new Date($scope.year, 0,1,0,0,0,0);
@@ -25,10 +30,28 @@ angular.module('Chart')
             setUpCharts(curUser);
           });
         lookup[reportKey] = true;
+				$scope.setSalesmenInputStatus();
       } else {
         setUpCharts(curUser);
-      }
+      };
     };
+
+		$scope.setSalesmenInputStatus = function() {
+			var reportKey = $scope.year + '_' + $scope.type;
+			if (!lookup[reportKey]) {
+				$scope.salesmenInputDisabled = true;
+				$scope.salesmenInputPlaceholder = 'Данные не загружены';
+				$scope.reportUser = '0';
+			} else {
+				$scope.salesmenInputDisabled = false;
+				$scope.salesmenInputPlaceholder = 'Выберите продавца...';
+				$scope.reportUser = '0';
+			}
+		};
+
+		$scope.isCurUserAManager = function() {
+			return $rootScope.globals.currentUser.roles.indexOf('manager') !== -1;
+		};
 
     function initClientsCounterFor(subject) {
       chartSettings[$scope.type + 'Series' + 'Order'].forEach(function(element, index, array) {

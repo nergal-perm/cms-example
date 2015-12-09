@@ -2,13 +2,18 @@
 <div class="container" ng-cloak>
 	<form class="form-inline" ng-submit="run()">
 		<label for="dashboardType" class="input-sm">Вид графика:</label>
-		<select class="form-control input-sm" id="dashboardType" ng-model="type">
+		<select class="form-control input-sm" id="dashboardType" ng-model="type" ng-change="setSalesmenInputStatus()">
 			<option value="segment">Сегментация клиентов</option>
 			<option value="funnel">Воронка продаж</option>
 		</select>
 		<label for="year" class="input-sm">Год:</label>
-		<select class="form-control input-sm" id="year" ng-model="year">
+		<select class="form-control input-sm" id="year" ng-model="year" ng-change="setSalesmenInputStatus()">
 			<option ng-repeat="n in [2015, 2016, 2017, 2018, 2019, 2020]">{{n}}</option>
+		</select>
+		<label for="salesmen" class="input-sm" ng-show="isCurUserAManager()">Продавец: </label>
+		<select class="form-control input-sm" id="salesmen" ng-model="reportUser" ng-change="setUpCharts(reportUser)" ng-disabled="salesmenInputDisabled" ng-show="isCurUserAManager()">
+			<option value="0" selected disabled>{{salesmenInputPlaceholder}}</option>
+			<option ng-repeat="user in users">{{user}}</option>
 		</select>
 		<input class="btn btn-primary input-sm" type="submit" value="Получить данные">
 	</form>

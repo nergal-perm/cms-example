@@ -5,15 +5,9 @@
 			<a class="navbar-brand" href="/#/main">Главная</a>					
 		</div>
 		<ul class="nav navbar-left top-nav">
-			<li><a href="/#/main">Ввод данных</a></li>
+			<li><a href="/#/main">{{isCurUserAManager() ? 'Просмотр данных' : 'Ввод данных'}}</a></li>
 			<li><a href="/#/charts">Отчеты</a></li>
-			<li ng-show="$root.globals.currentUser.roles.indexOf('manager') !== -1 && reportLocation">
-				<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Продавцы<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-							<li ng-click="setSalesman($event, user)" ng-repeat="user in users"><a href="">{{user}}</a></li>
-					</ul>
-			</li>
-			<li ng-show="$root.globals.currentUser.roles.indexOf('admin') !== -1"><a href="/#/test">Администрирование</a></li>
+			<li ng-show="isCurUserAnAdmin()"><a href="/#/test">Администрирование</a></li>
 		</ul>
 		<ul class="nav navbar-right top-nav">
 			<li><a href="/#/logout">Выйти</a></li>

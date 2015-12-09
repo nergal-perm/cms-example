@@ -117,7 +117,10 @@ angular.module('DataEntry')
 		$scope.item = {};
 		$scope.item.actions = [];
 		$scope.item.segmentServices = [];
-		$scope.item.user = $rootScope.globals.currentUser.username;
+		$scope.item.user = {
+			name: $rootScope.globals.currentUser.username,
+			displayedName: $rootScope.globals.currentUser.displayedName
+		}
 	 }
 
 	 $scope.atmServices = ["atm-AMS", "atm-Инкассация"];

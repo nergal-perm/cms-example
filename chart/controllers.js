@@ -7,7 +7,7 @@ angular.module('Chart')
     var seriesMap = [];
     var yearB;
     var yearE;
-    var curUser = $rootScope.globals.currentUser.username;
+    var curUser = $rootScope.globals.currentUser;
 
 		$scope.salesmenInputPlaceholder = 'Данные не загружены...';
 		$scope.salesmenInputDisabled = true;
@@ -25,14 +25,8 @@ angular.module('Chart')
       if(!lookup[reportKey]) {
         DataService.getDynamics($scope.year, $scope.type)
           .then(processQuery)
-          .then(function() {
-            console.log('Starting render');
-            setUpCharts(curUser);
-          });
         lookup[reportKey] = true;
 				$scope.setSalesmenInputStatus();
-      } else {
-        setUpCharts(curUser);
       };
     };
 
@@ -50,7 +44,7 @@ angular.module('Chart')
 		};
 
 		$scope.isCurUserAManager = function() {
-			return $rootScope.globals.currentUser.roles.indexOf('manager') !== -1;
+			return curUser.roles.indexOf('manager') !== -1;
 		};
 
     function initClientsCounterFor(subject) {
@@ -88,6 +82,7 @@ angular.module('Chart')
 
         var clientsRepository = {};
         var users = [];
+				var usersLookup = [];
 
         // Используем вспомогательный объект - сохраняем в него все записи из первого запроса,
         // а в отчете покажем только те из них, что присутствуют и во втором запросе тоже
@@ -103,12 +98,13 @@ angular.module('Chart')
             var _user = element.value[1];
             var _isActive = element.value[2];
             // При необходимости инициализируем общий счетчик клиентов с этим статусом и счетчик конкретного продавца
-            if (!lookup[_user + '_' + $scope.type + '_' + $scope.year]) {
-              initClientsCounterFor(_user);
+            if (!lookup[_user.name + '_' + $scope.type + '_' + $scope.year]) {
+              initClientsCounterFor(_user.name);
             }
-            
-            if(users.indexOf(_user) === -1) {
+
+            if(!usersLookup[_user.name]) {
               users.push(_user);
+							usersLookup[_user.name] = true;
             }
       
             // Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
@@ -122,10 +118,10 @@ angular.module('Chart')
             if (monthE > monthB) {
               for (var index = monthB; index <= monthE; index++){
                 lookup['team' + '_' + _status + '_' + $scope.year][index]++;
-                lookup[_user + '_' + _status + '_' + $scope.year][index]++;
+                lookup[_user.name + '_' + _status + '_' + $scope.year][index]++;
               }
               if (_isActive) {
-                lookup[_user + '_' + _status + '_' + 'active' + '_' + $scope.year][0]++;
+                lookup[_user.name + '_' + _status + '_' + 'active' + '_' + $scope.year][0]++;
                 lookup['team' + '_' + _status + '_' + 'active' + '_' + $scope.year][0]++;
               };                
             }            
@@ -143,17 +139,19 @@ angular.module('Chart')
         graphset: []
       };
       
+			user = JSON.parse(user);
+
       var teamDynamicsJson = getChartSettings('bar');
       teamDynamicsJson.title = {text: 'Общая динамика'};
       teamDynamicsJson.series = getSeriesFor('team');
     
       var userDynamicsJson = getChartSettings('bar');
-      userDynamicsJson.title = {text: 'Динамика по ' + user};
-      userDynamicsJson.series = getSeriesFor(user);
+      userDynamicsJson.title = {text: 'Динамика по ' + user.displayedName};
+      userDynamicsJson.series = getSeriesFor(user.name);
       
       var userStatusJson = getChartSettings('funnel');
-      userStatusJson.title = {text: 'Статус по ' + user};
-      userStatusJson.series = getSeriesFor(user, true);        
+      userStatusJson.title = {text: 'Статус по ' + user.displayedName};
+      userStatusJson.series = getSeriesFor(user.name, true);        
       
       var teamStatusJson = getChartSettings('funnel');
       teamStatusJson.title = {text: 'Общий статус'};
@@ -182,9 +180,6 @@ angular.module('Chart')
       }
     }
         
-    $scope.setSalesman = function($event, user) {
-      setUpCharts(user);
-    };
   }
- 
+
 ]);

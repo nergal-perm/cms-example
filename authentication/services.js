@@ -27,6 +27,8 @@ angular.module('Authentication')
                   } else {
                     $rootScope.globals = {
                         currentUser: {
+													username: response.userCtx.name,
+													displayedName: response.userCtx.displayedName,
                           roles: response.userCtx.roles
                         }
                     }; 

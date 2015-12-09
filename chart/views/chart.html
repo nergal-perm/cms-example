@@ -13,7 +13,7 @@
 		<label for="salesmen" class="input-sm" ng-show="isCurUserAManager()">Продавец: </label>
 		<select class="form-control input-sm" id="salesmen" ng-model="reportUser" ng-change="setUpCharts(reportUser)" ng-disabled="salesmenInputDisabled" ng-show="isCurUserAManager()">
 			<option value="0" selected disabled>{{salesmenInputPlaceholder}}</option>
-			<option ng-repeat="user in users">{{user}}</option>
+			<option ng-repeat="user in users" value="{{user}}">{{user.displayedName}}</option>
 		</select>
 		<input class="btn btn-primary input-sm" type="submit" value="Получить данные">
 	</form>

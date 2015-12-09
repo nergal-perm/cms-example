@@ -14,7 +14,7 @@ body {
 
 @media(min-width:768px) {
     body {
-        margin-top: 50px;
+        margin-top: 75px;
     }
 }
 
@@ -230,5 +230,10 @@ ul.alert-dropdown {
 }
 
 .chart-row {
-  height: 40vh;
+  height: 78vh;
+  width: 100%;
+}
+
+#dashboard {
+    width: 100%;
 }

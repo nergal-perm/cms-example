@@ -1,116 +1,86 @@
 angular.module('Chart')
 
-.controller('StatusCtrl', 
-  ['$scope', '$http', '$routeParams', 'DataService', 
-  function($scope, $http, $routeParams, DataService) {
-
-  var sourceData = [];
-  
-  switch ($routeParams.chartType) {
-    case "segment": 
-      showCurrentStatus(DataService.getCurrentStatus, 'Текущее состояние сегментов');
-      break;
-    case "funnel":
-      showCurrentStatus(DataService.getCurrentStatus, 'Текущее состояние воронки продаж');
-      break;
-    default:
-      // do nothing
-  } 
-  
-  function showCurrentStatus(query, title) {
-    query($routeParams.chartType).then(function(result) {
-        sourceData = result.rows;
-
-        // Рассчитываем общий итог, чтобы потом красиво отобразить доли
-        var sourceTotal = sourceData.reduce(function(prev, next) {
-          return prev + next.value;
-        }, 0); 
-
-        // Преобразуем исходные данные в правильный набор для графика
-        var series= [];
-        sourceData.forEach(function(el, index){
-          series.push({
-            tooltip: {
-              text: 'Клиентов: %node-value\n' + 'Доля: ' + (sourceData[index].value / sourceTotal * 100).toFixed(2) + '%'
-            },
-            legendText: el.key,
-            values: [el.value]
-          });
-        });
-        
-        // Задаем параметры диаграммы в целом
-        $scope.chartData = {
-          type: 'funnel',
-          //stacked: 'true',
-          //stackType: '100%',
-          title: {text: title},
-          series: series,
-          legend: {
-            visible: true
-          }
-        };                    
-    });
-  }
-  
-}])
-
 .controller('FunnelCtrl', 
-  ['$scope', '$http', '$routeParams', 'DataService', '$rootScope', 'chartSettings',
-  function($scope, $http, $routeParams, DataService, $rootScope, chartSettings) {
+  ['$scope', '$http', 'DataService', '$rootScope', 'chartSettings', '$q',
+  function($scope, $http, DataService, $rootScope, chartSettings, $q) {
     var lookup = {};
     var seriesMap = [];
-    var yearB = new Date($routeParams.year, 0,1,0,0,0,0);
-    var yearE = new Date($routeParams.year, 11,31,23,59,59,999);
+    var yearB;
+    var yearE;
     var curUser = $rootScope.globals.currentUser.username;
+    
+    function initialize() {
+      yearB = new Date($scope.year, 0,1,0,0,0,0);
+      yearE = new Date($scope.year, 11,31,23,59,59,999);
+    };
+    
+    $scope.run = function($event) {
+      initialize();
+      var reportKey = $scope.year + '_' + $scope.type;
+      if(!lookup[reportKey]) {
+        DataService.getDynamics($scope.year, $scope.type)
+          .then(processQuery)
+          .then(function() {
+            console.log('Starting render');
+            setUpCharts(curUser);
+          });
+        lookup[reportKey] = true;
+      } else {
+        setUpCharts(curUser);
+      }
+    };
 
-    DataService.getDynamics($routeParams.year, $routeParams.type).then(processQuery);
-
-    function initClientsCounterFor(user) {
-      chartSettings[$routeParams.type + 'Series' + 'Order'].forEach(function(element, index, array) {
-        var keyDynamics = user + '_' + element; 
+    function initClientsCounterFor(subject) {
+      chartSettings[$scope.type + 'Series' + 'Order'].forEach(function(element, index, array) {
+        var keyDynamics = subject + '_' + element + '_' + $scope.year; 
         seriesMap.push(keyDynamics);
         lookup[keyDynamics] = new Array(0,0,0,0,0,0,0,0,0,0,0,0);
         
-        var keyStatus = user + '_' + element + '_active';
+        var keyStatus = subject + '_' + element + '_active' + '_' + $scope.year;
         seriesMap.push(keyStatus);
         lookup[keyStatus] = [0];
       });
-      lookup[user] = true;
+      // Сохраняем запись о том, что для данного 
+      lookup[subject + '_' + $scope.type + '_' + $scope.year] = true;
     };
     
     function getSeriesFor(subject, isActive) {
-        var postfix = isActive !=undefined ? '_active' : '';
+        var postfix = (isActive !=undefined ? '_active' : '') + '_' + $scope.year;
         var series = [];
-        chartSettings[$routeParams.type + 'Series' + 'Order'].forEach(function(element, index, array) {
+        chartSettings[$scope.type + 'Series' + 'Order'].forEach(function(element, index, array) {
           var template = JSON.parse(JSON.stringify(chartSettings.seriesTemplate));
           template.text = element;
           template.legendText = element;
           template.values = lookup[subject + '_' + element + postfix];
-          
+          template.backgroundColor1 = chartSettings.plotColors[element][0];
+					template.backgroundColor2 = chartSettings.plotColors[element][1];
           series.push(template);
         });
         return series;      
     };
   
     function processQuery(result) {
+      return $q(function(resolve, reject) {
         initClientsCounterFor('team');
+
+        var clientsRepository = {};
         var users = [];
 
         // Используем вспомогательный объект - сохраняем в него все записи из первого запроса,
         // а в отчете покажем только те из них, что присутствуют и во втором запросе тоже
         result[0].rows.forEach(function(element) {
           if (element.key <= yearE.toISOString()) {
-            lookup[element.id] = element;
+            clientsRepository[element.id] = element;
           }
         });
 
         result[1].rows.forEach(function(element) {
-          if (lookup[element.id] && element.key >= yearB.toISOString()) {
+          if (clientsRepository[element.id] && element.key >= yearB.toISOString()) {
             var _status = element.value[0];
             var _user = element.value[1];
             var _isActive = element.value[2];
             // При необходимости инициализируем общий счетчик клиентов с этим статусом и счетчик конкретного продавца
-            if (!lookup[_user]) {
+            if (!lookup[_user + '_' + $scope.type + '_' + $scope.year]) {
               initClientsCounterFor(_user);
             }
             
@@ -119,48 +89,65 @@ angular.module('Chart')
             }
       
             // Определяем месяц начала и месяц окончания действия записи. Если совпадают - пропускаем
-            var monthB = (lookup[element.id].key < yearB.toISOString()) 
+            var monthB = (clientsRepository[element.id].key < yearB.toISOString()) 
               ? 0 
-              : (new Date(lookup[element.id].key).getMonth());
+              : (new Date(clientsRepository[element.id].key).getMonth());
             var monthE = (element.key > yearE.toISOString()) 
               ? 11 
               : (new Date(element.key).getMonth());
 
             if (monthE > monthB) {
               for (var index = monthB; index <= monthE; index++){
-                lookup['team' + '_' + _status][index]++;
-                lookup[_user + '_' + _status][index]++;
+                lookup['team' + '_' + _status + '_' + $scope.year][index]++;
+                lookup[_user + '_' + _status + '_' + $scope.year][index]++;
               }
               if (_isActive) {
-                lookup[_user + '_' + _status + '_' + 'active'][0]++;
-                lookup['team' + '_' + _status + '_' + 'active'][0]++;
+                lookup[_user + '_' + _status + '_' + 'active' + '_' + $scope.year][0]++;
+                lookup['team' + '_' + _status + '_' + 'active' + '_' + $scope.year][0]++;
               };                
             }            
           };
-        
-          users.sort();
-          $scope.users=users;
-  
-          $scope.$apply(setUpCharts(curUser));
         });
+        
+        users.sort();
+        $scope.users=users;
+        resolve();       
+      });        
     };
       
     function setUpCharts(user) {
-        $scope.teamDynamicsJson = getChartSettings('bar');
-        $scope.teamDynamicsJson.title = {text: 'Общая динамика'};
-        $scope.teamDynamicsJson.series = getSeriesFor('team');
+      var dashboard = {
+        graphset: []
+      };
       
-        $scope.userDynamicsJson = getChartSettings('bar');
-        $scope.userDynamicsJson.title = {text: 'Динамика по ' + user};
-        $scope.userDynamicsJson.series = getSeriesFor(user);
-        
-        $scope.userStatusJson = getChartSettings('funnel');
-        $scope.userStatusJson.title = {text: 'Статус по ' + user};
-        $scope.userStatusJson.series = getSeriesFor(user, true);        
-        
-        $scope.teamStatusJson = getChartSettings('funnel');
-        $scope.teamStatusJson.title = {text: 'Общий статус'};
-        $scope.teamStatusJson.series = getSeriesFor('team', true);
+      var teamDynamicsJson = getChartSettings('bar');
+      teamDynamicsJson.title = {text: 'Общая динамика'};
+      teamDynamicsJson.series = getSeriesFor('team');
+    
+      var userDynamicsJson = getChartSettings('bar');
+      userDynamicsJson.title = {text: 'Динамика по ' + user};
+      userDynamicsJson.series = getSeriesFor(user);
+      
+      var userStatusJson = getChartSettings('funnel');
+      userStatusJson.title = {text: 'Статус по ' + user};
+      userStatusJson.series = getSeriesFor(user, true);        
+      
+      var teamStatusJson = getChartSettings('funnel');
+      teamStatusJson.title = {text: 'Общий статус'};
+      teamStatusJson.series = getSeriesFor('team', true);
+      
+      dashboard.graphset.push(userStatusJson);
+      dashboard.graphset.push(userDynamicsJson);
+      dashboard.graphset.push(teamStatusJson);
+      dashboard.graphset.push(teamDynamicsJson);
+      
+      zingchart.render({
+        id:'dashboard',
+        container: 'dashboard',
+        data: dashboard,
+        height: "100%",
+        width: "100%"
+      });
     };      
     
     function getChartSettings(chartType, user) {

@@ -23,20 +23,34 @@ angular.module('Config')
 			align: "left",
 			verticalAlign: "bottom",
 			draggable: true,            
-			visible: true
-		}
+			visible: true,
+			shared: true
+		},
+	  width: '35%',
+	  x: '2%'
 	},
 	barSettings: {
 		type: 'bar',
 		stacked: 'true',
 		stackType: '100%',
 		legend: {
-			visible: false
-		}
+			visible: false,
+			shared: true
+		},
+		width: '58%',
+		x: '40%'
 	},
 	seriesTemplate: {
 		tooltip: {
 			text: '%t: %v (%npv%)'
 		}
+	},
+	plotColors: {
+		"Интерес": ["yellow", "yellow"],
+		"Убеждение": ["green","green"],
+		"Сделка": ["blue","blue"],
+		"Резерв": ["grey","grey"],
+		"Прибыльный ЦЕЛЕВОЙ": ["blue","blue"],
+		"Прибыльный НЕЦЕЛЕВОЙ": ["red", "red"]
 	}
 });

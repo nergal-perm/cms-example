@@ -48,7 +48,7 @@ angular.module('cmsAngular', [
 					templateUrl: 'test/views/test.html'
 				})
         
-        .when('/charts/:type/:year', {
+        .when('/charts', {
           controller: 'FunnelCtrl',
           templateUrl: 'chart/views/chart.html'
         })

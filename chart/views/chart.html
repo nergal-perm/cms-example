@@ -1,37 +1,19 @@
 <div ng-include="'top-menu/views/top-menu.html'"></div>
-<div class="container">
-	<br />
+<div class="container" ng-cloak>
+	<form class="form-inline" ng-submit="run()">
+		<label for="dashboardType" class="input-sm">Вид графика:</label>
+		<select class="form-control input-sm" id="dashboardType" ng-model="type">
+			<option value="segment">Сегментация клиентов</option>
+			<option value="funnel">Воронка продаж</option>
+		</select>
+		<label for="year" class="input-sm">Год:</label>
+		<select class="form-control input-sm" id="year" ng-model="year">
+			<option ng-repeat="n in [2015, 2016, 2017, 2018, 2019, 2020]">{{n}}</option>
+		</select>
+		<input class="btn btn-primary input-sm" type="submit" value="Получить данные">
+	</form>
+	<hr />
 	<div class="row">
-		<div class="col-sm-4" > 
-			<div class="chart-row" zingchart id="userStatus" zc-json="userStatusJson" zc-height="100%" zc-width="100%"></div>
-			<!--
-			<h3>{{userStatusJson.title.text}}</h1>
-			<p ng-repeat="value in userStatusJson.series">{{value.legendText}}: {{value.values}}</p>
-			-->
-		</div>
-		<div class="col-sm-8">
-			<div class="chart-row" zingchart id="userDynamics" zc-json="userDynamicsJson" zc-height="100%" zc-width="100%"></div>
-			<!--
-			<h3>{{userDynamicsJson.title.text}}</h1>
-			<p ng-repeat="value in userDynamicsJson.series">{{value.legendText}}: {{value.values}}</p>
-			-->
-		</div>
-	</div>
-	<br />
-	<div class="row chart-row">
-		<div class="col-sm-4">
-			<div class="chart-row" zingchart id="teamStatus" zc-json="teamStatusJson" zc-height="100%" zc-width="100%"></div>			
-			<!--
-			<h3>{{teamStatusJson.title.text}}</h1>
-			<p ng-repeat="value in teamStatusJson.series">{{value.legendText}}: {{value.values}}</p>
-			-->
-		</div>
-		<div class="col-sm-8">
-			<!--
-			<h3>{{teamDynamicsJson.title.text}}</h1>
-			<p ng-repeat="value in teamDynamicsJson.series">{{value.legendText}}: {{value.values}}</p>	
-			-->
-			<div class="chart-row" zingchart id="teamDynamics" zc-json="teamDynamicsJson" zc-height="100%" zc-width="100%"></div>
-		</div>		
+		<div id="dashboard" class="chart-row"></div>		
 	</div>
 </div>

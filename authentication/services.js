@@ -28,7 +28,7 @@ angular.module('Authentication')
 										console.log(JSON.stringify(response.userCtx));
                     $rootScope.globals = {
                         currentUser: {
-													username: response.userCtx.name,
+													name: response.userCtx.name,
                           roles: response.userCtx.roles
                         }
                     }; 
@@ -45,19 +45,18 @@ angular.module('Authentication')
 
         service.SetCredentials = function (username, password) {
             var authdata = Base64.encode(username + ':' + password);
-            $rootScope.globals.currentUser.username = username;
+            $rootScope.globals.currentUser.name = username;
 						$http({
 							method: 'GET',
 							url: appSettings.usersDb + '/org.couchdb.user:' + username
 						}).then(function success(response) {
 							$rootScope.globals.currentUser.displayedName = response.data.displayedName;
-							console.log(JSON.stringify($rootScope.globals.currentUser));
+							$rootScope.globals.currentUser.authdata = authdata;
+							$http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+							$cookieStore.put('globals', $rootScope.globals);
 						}, function error(response) {
 							console.log('Error getting user information for user: ' + username);	
 						});
-            $rootScope.globals.currentUser.authdata = authdata;
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-            $cookieStore.put('globals', $rootScope.globals);
         };
 
         service.ClearCredentials = function () {

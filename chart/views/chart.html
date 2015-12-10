@@ -15,7 +15,7 @@
 			<option value="0" selected disabled>{{salesmenInputPlaceholder}}</option>
 			<option ng-repeat="user in users" value="{{user}}">{{user.displayedName}}</option>
 		</select>
-		<input class="btn btn-primary input-sm" type="submit" value="Получить данные">
+		<input class="btn btn-primary input-sm" type="submit" value="Получить данные" ng-disabled="!(year && type)">
 	</form>
 	<hr />
 	<div class="row">

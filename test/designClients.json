@@ -10,7 +10,7 @@
 				 "reduce": "_count"
 			 },
        "byUser": {
-         "map": "function(doc) {\n  if(doc.cancelled === '2099-12-31T23:59:59.999Z') {\n    emit(doc.user, doc);\n  }\n}"
+         "map": "function(doc) {\n  if(doc.cancelled === '2099-12-31T23:59:59.999Z') {\n    emit(doc.user.name, doc);\n  }\n}"
        }
    }
 }

@@ -154,6 +154,7 @@ angular.module('Chart')
       };
       
 			user = JSON.parse(user);
+			console.log(user);
 
       var teamDynamicsJson = getChartSettings('bar');
       teamDynamicsJson.title = {text: 'Общая динамика'};

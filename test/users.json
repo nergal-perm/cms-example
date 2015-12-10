@@ -3,6 +3,7 @@
 		{
 			"_id": "org.couchdb.user:admin",
 			"name": "admin",
+			"displayedName": "Администратор",
 			"password": "admin",
 			"roles": ["admin"],
 			"type": "user"
@@ -10,6 +11,7 @@
 		{ 
 			"_id": "org.couchdb.user:salesman1",
 			"name": "salesman1",
+			"displayedName": "Петров П.П.",
 			"password": "salesman1",
 			"roles": ["salesman"],
 			"type": "user"
@@ -17,6 +19,7 @@
 		{ 
 			"_id": "org.couchdb.user:salesman2",
 			"name": "salesman2",
+			"displayedName": "Сидоров С.С.",
 			"password": "salesman2",
 			"roles": ["salesman"],
 			"type": "user"
@@ -24,6 +27,7 @@
 		{ 
 			"_id": "org.couchdb.user:manager1",
 			"name": "manager1",
+			"displayedName": "Иванов И.И.",
 			"password": "manager1",
 			"roles": ["manager"],
 			"type": "user"

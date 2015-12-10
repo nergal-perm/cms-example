@@ -27,7 +27,10 @@
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
       "created": "2015-01-01T03:53:45.379Z",
       "cancelled": "2099-12-31T23:59:59.999Z",
-      "user": "salesman1"
+      "user": {
+				"name": "salesman1",
+				"displayedName": "Петров П.П."
+			}
     },
     {
       "_id": "client:vtb24:1",
@@ -56,7 +59,10 @@
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2014" }],
       "created": "2015-06-28T03:53:45.379Z",
       "cancelled": "2099-12-31T23:59:59.999Z",
-      "user": "salesman1"
+      "user": {
+				"name": "salesman1",
+				"displayedName": "Петров П.П."
+			}
     },
     {
       "_id":"client:bank-primer:1",
@@ -85,31 +91,46 @@
       "actions": [{ "actionType": "Контакт: email", "actionDate": "10.10.2015" }],
       "created": "2015-05-28T03:53:45.379Z",
       "cancelled": "2099-12-31T23:59:59.999Z",
-      "user": "salesman2"      
+      "user": {
+				"name": "salesman2",
+				"displayedName": "Сидоров С.С."
+			}
     },
     {
       "_id":"client:bank-test:1",
       "clientName": "Банк Тест 1",
       "statusName": "Интерес",
+			"segmentName": "Прибыльный ЦЕЛЕВОЙ",
       "created": "2014-01-01T01:01:59.123Z",
       "cancelled": "2015-03-31T01:01:59.123Z",
-      "user": "salesman1"
+      "user": {
+				"name": "salesman1",
+				"displayedName": "Петров П.П."
+			}
     },
     {
       "_id":"client:bank-test:2",
       "clientName": "Банк Тест 1",
       "statusName": "Убеждение",
+			"segmentName": "Прибыльный НЕЦЕЛЕВОЙ",
       "created": "2015-03-31T01:01:59.123Z",
       "cancelled": "2015-08-31T01:01:59.123Z",
-      "user": "salesman1"
+      "user": {
+				"name": "salesman1",
+				"displayedName": "Петров П.П."
+			}
     },
     {
       "_id":"client:bank-test:3",
       "clientName": "Банк Тест 1",
       "statusName": "Сделка",
+			"segmentName": "Прибыльный ЦЕЛЕВОЙ",
       "created": "2015-08-31T01:01:59.123Z",
       "cancelled": "2099-12-31T23:59:59.999Z",
-      "user": "salesman1"
+      "user": {
+				"name":"salesman1",
+				"displayedName": "Петров П.П."
+			}
     }                        
   ]
 }

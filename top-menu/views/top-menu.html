@@ -10,6 +10,7 @@
 			<li ng-show="isCurUserAnAdmin()"><a href="/#/test">Администрирование</a></li>
 		</ul>
 		<ul class="nav navbar-right top-nav">
+			<li ng-show="curUser"><a href="">{{curUser.displayedName}}</a></li>
 			<li><a href="/#/logout">Выйти</a></li>
 		</ul>
 	</div>				

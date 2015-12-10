@@ -25,10 +25,10 @@ angular.module('Authentication')
                   } else if (!response.userCtx.name) {
                     console.log('No one logged in');
                   } else {
+										console.log(JSON.stringify(response.userCtx));
                     $rootScope.globals = {
                         currentUser: {
 													username: response.userCtx.name,
-													displayedName: response.userCtx.displayedName,
                           roles: response.userCtx.roles
                         }
                     }; 
@@ -46,6 +46,15 @@ angular.module('Authentication')
         service.SetCredentials = function (username, password) {
             var authdata = Base64.encode(username + ':' + password);
             $rootScope.globals.currentUser.username = username;
+						$http({
+							method: 'GET',
+							url: appSettings.usersDb + '/org.couchdb.user:' + username
+						}).then(function success(response) {
+							$rootScope.globals.currentUser.displayedName = response.data.displayedName;
+							console.log(JSON.stringify($rootScope.globals.currentUser));
+						}, function error(response) {
+							console.log('Error getting user information for user: ' + username);	
+						});
             $rootScope.globals.currentUser.authdata = authdata;
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookieStore.put('globals', $rootScope.globals);

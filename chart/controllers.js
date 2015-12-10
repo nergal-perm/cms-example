@@ -23,15 +23,23 @@ angular.module('Chart')
       initialize();
       var reportKey = $scope.year + '_' + $scope.type;
       if(!lookup[reportKey]) {
+				console.log('Fetching new data for ' + reportKey);
         DataService.getDynamics($scope.year, $scope.type)
           .then(processQuery)
-        lookup[reportKey] = true;
-				$scope.setSalesmenInputStatus();
-      };
+					.then(function() {
+						setUpCharts(JSON.stringify(curUser));
+						setSalesmenInputStatus();
+					});
+			} else {
+				console.log('Using fetched data for ' + reportKey);
+				setUpCharts(JSON.stringify(curUser));
+				setSalesmenInputStatus();
+			}
     };
 
-		$scope.setSalesmenInputStatus = function() {
+		function setSalesmenInputStatus() {
 			var reportKey = $scope.year + '_' + $scope.type;
+			console.log('report key for seting input state: ' + reportKey + ', its index: ' + lookup[reportKey]);
 			if (!lookup[reportKey]) {
 				$scope.salesmenInputDisabled = true;
 				$scope.salesmenInputPlaceholder = 'Данные не загружены';
@@ -42,6 +50,8 @@ angular.module('Chart')
 				$scope.reportUser = '0';
 			}
 		};
+
+		$scope.setSalesmenInputStatus = setSalesmenInputStatus;
 
 		$scope.isCurUserAManager = function() {
 			return curUser.roles.indexOf('manager') !== -1;
@@ -115,7 +125,7 @@ angular.module('Chart')
               ? 11 
               : (new Date(element.key).getMonth());
 
-            if (monthE > monthB) {
+            if (monthE > monthB || element.key > yearE.toISOString()) {
               for (var index = monthB; index <= monthE; index++){
                 lookup['team' + '_' + _status + '_' + $scope.year][index]++;
                 lookup[_user.name + '_' + _status + '_' + $scope.year][index]++;
@@ -127,14 +137,18 @@ angular.module('Chart')
             }            
           };
         });
+				
+				lookup[$scope.year + '_' + $scope.type] = true;
         
         users.sort();
         $scope.users=users;
+				console.log('Done processing, lookup object: ' + JSON.stringify(lookup));
         resolve();       
       });        
     };
       
     function setUpCharts(user) {
+			console.log('Preparing charts...');
       var dashboard = {
         graphset: []
       };
@@ -162,6 +176,8 @@ angular.module('Chart')
       dashboard.graphset.push(teamStatusJson);
       dashboard.graphset.push(teamDynamicsJson);
       
+			console.log('Starting render...');
+
       zingchart.render({
         id:'dashboard',
         container: 'dashboard',

@@ -11,4 +11,6 @@ function($scope, $rootScope, $location) {
 	$scope.isCurUserAnAdmin = function() {
 		return $rootScope.globals.currentUser.roles.indexOf('admin') !== -1;
 	};
+	$scope.curUser = $rootScope.globals.currentUser;
+	console.log('Current user: ' + $scope.curUser.displayedName);
 }]);
